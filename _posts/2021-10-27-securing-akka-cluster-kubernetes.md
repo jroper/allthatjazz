@@ -1,6 +1,7 @@
 ---
 title: "Securing Akka cluster communication in Kubernetes"
 tags: kubernetes akka
+head: '<link rel="canonical" href="https://akka.io/blog/article/2021/10/27/akka-cluster-mtls"/>'
 ---
 
 A feature of Akka that we've been using in production for some time now but haven't made a big deal about is Akka remoting's support for using mTLS certificates that are frequently rotated. This support is designed to work with cert-manager and other Kubernetes based secret providers with an absolute minimum of configuration. All you need is two lines of configuration in Akka's configuration file, and you're ready to go on the Akka side.
