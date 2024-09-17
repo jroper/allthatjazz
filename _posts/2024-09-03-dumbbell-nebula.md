@@ -3,7 +3,7 @@ title: "Dumbbell Nebula"
 tags: astrophotography
 ---
 
-![Dumbbell Nebula](images/astro/2024-09-03-dumbbell.jpg)
+<img class="astro" alt="Dumbbell Nebula" src="images/astro/2024-09-03-dumbbell.jpg"/>
 
 This is the Dumbbell Nebula, also known as Messier 27, or NGC 6853. It's a planetary nebula roughly 1360 lightyears away. At its centre is a hot white dwarf, which is showering the gasses it shed while it was a red giant with UV rays. This causes the gasses to ionise, and subsequently glow.
 
