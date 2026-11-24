@@ -1,0 +1,47 @@
+name: Publish
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# Only one deploy at a time, and don't cancel one that's half way through pushing
+concurrency:
+  group: publish
+  cancel-in-progress: false
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+          cache: sbt
+
+      - uses: sbt/setup-sbt@v1
+
+      - name: Test
+        working-directory: _engine
+        run: sbt -batch test
+
+      - name: Generate site
+        working-directory: _engine
+        run: sbt -batch "run .. --url https://jazzy.id.au"
+
+      # The published branch only ever contains the generated site, as a single commit
+      - name: Publish to gh-pages
+        working-directory: _site
+        run: |
+          git init -b gh-pages
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Publish ${GITHUB_SHA}"
+          git push --force "https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git" gh-pages
