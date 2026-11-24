@@ -1,0 +1,36 @@
+@import java.time.format.DateTimeFormatter
+@import java.util.Locale
+
+@(blog: Blog, router: Router, post: BlogPost)
+
+@main(blog, router, Some(post.title), post.properties.getString("head").map(Html.apply)) {
+  <article>
+    <h1 class="postTitle"><a href="@router.view(post)">@post.title</a></h1>
+
+    @Html(post.content)
+
+    <div class="postDate">Posted @DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH).format(post.date)</div>
+    <ul class="tags">
+    @for(tag <- post.tags) {
+      <li><a href="@router.tag(tag)">@tag</a></li>
+    }
+    </ul>
+
+    @for(disqusId <- blog.info.properties.getString("disqus_shortname")) {
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "@disqusId";
+      var disqus_identifier = "@post.id";
+      var disqus_title = "@post.title";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    }
+  </article>
+}

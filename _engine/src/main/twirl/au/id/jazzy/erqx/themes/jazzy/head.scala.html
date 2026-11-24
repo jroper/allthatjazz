@@ -1,0 +1,22 @@
+@(blog: Blog, router: Router, title: Option[String], extraHead: Option[Html])
+
+<meta charset="utf-8">
+
+<base href="@router.path/"/>
+
+<title>@blog.info.title@title.map(" - " + _).getOrElse("")</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="@router.atom" />
+
+<link rel="stylesheet" href="@router.themeAsset("erqx-jazzy-theme.css")">
+
+<link rel="shortcut icon" href="@router.themeAsset("erqx-icon.ico")" type="image/x-icon">
+<link rel="icon" href="@router.themeAsset("erqx-icon.ico")" type="image/x-icon">
+
+@headExtras()
+
+@for(content <- extraHead) {
+    @content
+}

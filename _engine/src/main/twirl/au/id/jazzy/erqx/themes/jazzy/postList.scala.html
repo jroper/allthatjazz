@@ -1,0 +1,43 @@
+@import java.time.format.DateTimeFormatter
+@import java.util.Locale
+
+@(blog: Blog, router: Router, title: Option[String], groups: List[PostGroup], nav: ListNav)
+
+@listNav(position: String) = {
+  @if(nav.nonEmpty) {
+    <nav class="listNav listNav-@position">
+      <span class="previous">@for(l <- nav.previous) {<a href="@l.url" rel="prev">&laquo; @l.text</a>}</span>
+      <span class="up">@for(l <- nav.up) {<a href="@l.url" rel="up">&uarr; @l.text</a>}</span>
+      <span class="next">@for(l <- nav.next) {<a href="@l.url" rel="next">@l.text &raquo;</a>}</span>
+    </nav>
+  }
+}
+
+@main(blog, router, title, None) {
+
+  @listNav("top")
+
+  @for(t <- title) {
+    <h2 class="listTitle">@t</h2>
+  }
+
+  <div class="posts">
+  @for(group <- groups) {
+    <section class="postGroup">
+      @for(heading <- group.heading) {
+        <h2 class="groupHeading"><a href="@heading.url">@heading.text</a></h2>
+      }
+      @for(post <- group.posts) {
+        <article>
+          <h3 class="postTitle"><a href="@router.view(post)">@post.title</a></h3>
+          <div class="postDate">@DateTimeFormatter.ofPattern("d MMMM yyyy", Locale.ENGLISH).format(post.date)</div>
+          <p class="postSummary">@post.summary</p>
+        </article>
+        <hr/>
+      }
+    </section>
+  }
+  </div>
+
+  @listNav("bottom")
+}

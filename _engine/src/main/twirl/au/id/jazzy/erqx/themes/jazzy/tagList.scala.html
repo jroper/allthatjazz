@@ -1,0 +1,11 @@
+@(blog: Blog, router: Router, tags: List[(String, Int)])
+
+@main(blog, router, Some("Tags"), None) {
+  <h2 class="listTitle">All tags</h2>
+
+  <ul class="tagList">
+  @for((tag, count) <- tags) {
+    <li><a href="@router.tag(tag)">@tag</a> <span class="tagCount">(@count)</span></li>
+  }
+  </ul>
+}
