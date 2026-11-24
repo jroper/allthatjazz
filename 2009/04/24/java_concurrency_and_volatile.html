@@ -1,0 +1,279 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Java Concurrency and Volatile</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2009/04/24/java_concurrency_and_volatile.html">Java Concurrency and Volatile</a></h1>
+
+    <p>
+The volatile keyword is a keyword that very few Java developers know the meaning of, let alone when they should use it.  The reason for this, I believe, is that the reason why it's needed is such a complex topic that unless you've studied in detail the way CPUs use registers, cache, and the way the JVM uses stack frames, it's impossible to understand why it's needed.  The other reason I think, is that it is difficult to demonstrate the consequences of not using it.  That is why I came up with this little puzzle, to highlight how important the volatile keyword is.
+</p>
+
+<p>
+For this demonstration, you will need a multi processor Linux 2.6 or OpenSolaris system, with Java 5 or above.  It will not work on Mac or Windows.  If you know why it doesn't work on Mac or Windows, please leave a comment explaining, I'd really like to know.  What this does highlight though is just how complex Java concurrency issues are.
+</p>
+
+<p>
+So on to the puzzle.  Without executing it, try and work out what will happen when you run the following code:
+</p>
+
+<pre class="prettyprint"><code class="language-java">public class ConcurrencyFun implements Runnable
+{
+    private String str;
+    void setStr(String str)
+    {
+        this.str = str;
+    }
+    public void run()
+    {
+        while (str == null);
+        System.out.println(str);
+    }
+    public static void main(String[] args) throws Exception
+    {
+        ConcurrencyFun fun = new ConcurrencyFun();
+        new Thread(fun).start();
+        Thread.sleep(1000);
+        fun.setStr("Hello world!!");
+    }
+}
+</code></pre>
+
+<p>
+Most people would guess that the above code would wait for about one second, print the text "Hello world!!", and then exit.  The spawned thread busy waits for <tt>str</tt> to not be null, and then prints it.  The main thread, after starting the spawned thread, waits for one second, and then sets <tt>str</tt> to be "Hello world!!".  Simple, right?
+</p>
+
+<p>
+Now try running it (remember, only on a multi processor Linux 2.6 or Solaris system).  What actually happens?  On my machine, the program never exits.  Why is this?
+</p>
+
+<p>
+The reason is that the JVM is free to make its own copy of the <tt>str</tt> pointer available to each thread that uses it.  This could come in many forms.  It could be that the pointer is loaded into a register and is continually read from that register.  This is what is most likely happening in our case.  It could be that the pointer is loaded into the CPU cache, and never expired, even after update.  Or, it is also possible that the JVM will make a copy of the pointer in the threads stack frame, to allow for more efficient memory access.  Whether you understand anything I've just said or not, the point is that changes to the <tt>str</tt> field may not necessarily be seen by all threads accessing it, in our case, it will never be seen by the spawned thread.
+</p>
+
+<p>
+This is where the volatile keyword comes in.  The volatile keyword tells the JVM that any writes to that field must be viewable by all threads.  This means that the compiled machine code may not read the variable into a register and use that multiple times, it must read it from memory every time.  It also must not read it from the CPU cache, it must make sure that every read comes straight from memory.  And finally, it stops the JVM from creating a local copy of the field in the threads stack frame.
+</p>
+
+<p>
+So, adding the volatile keyword, like so:
+</p>
+
+<pre class="prettyprint"><code class="language-java">public class ConcurrencyFun implements Runnable
+{
+    private volatile String str;
+    void setStr(String str)
+    {
+        this.str = str;
+    }
+    public void run()
+    {
+        while (str == null);
+        System.out.println(str);
+    }
+    public static void main(String[] args) throws Exception
+    {
+        ConcurrencyFun fun = new ConcurrencyFun();
+        new Thread(fun).start();
+        Thread.sleep(1000);
+        fun.setStr("Hello world!!");
+    }
+}
+</code></pre>
+
+<p>
+results in the expected behaviour happening, the program waits one second, prints out "Hello world!!" and then exists.
+</p>
+
+<h3>The complexity of concurrency</h3>
+
+<p>
+There are other ways to make the above code work.  For example, if in the while loop, you add some code that prints something out, you will find that it works.  My guess at the reason for this is that the register storing <tt>str</tt> ends up getting used for something else, and so on each iteration, <tt>str</tt> gets read from memory.  Note that this is not a real fix, it is still possible for problems to occur, and indeed on some architectures the program still will not exit.  Another thing that will work is to invoke Java with the <tt>-Xint</tt> argument.  This disables machine code compilation, and hence makes concurrency issues arising from registers and CPU caches much less likely.  But again, it's not a solution.  Using the volatile keyword is the only solution that guarantees that it will work, every time, on every platform.
+</p>
+
+    <div class="postDate">Posted 24 April 2009</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/java.html">java</a></li>
+    
+      <li><a href="/tags/concurrency.html">concurrency</a></li>
+    
+      <li><a href="/tags/volatile.html">volatile</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2009-04-24-java_concurrency_and_volatile";
+      var disqus_title = "Java Concurrency and Volatile";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

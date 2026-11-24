@@ -1,0 +1,243 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - socket.io - The good, the bad and the ugly</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2017/08/02/socket-io.html">socket.io - The good, the bad and the ugly</a></h1>
+
+    <p>I have recently finished <a href="https://github.com/playframework/play-socket.io">an implementation</a> of <a href="https://socket.io">socket.io</a> server-side support for Play Framework. Naturally, I&rsquo;ve become intimately familiar with the protocol, and I&rsquo;ve formed a few opinions of it during the course of my efforts, which I&rsquo;m going to share.</p>
+<p>All reviews of technology are relative, relative to the things that the reviewer values in technology. Not everyone values the same things, and so this means that a review by someone who values different things to you is probably irrelevant to you. My reason for publishing this review is that there are a good number of people out there who share similar technology values to me, and so they will find this review useful as they evaluate whether socket.io is right for them. For people that don&rsquo;t share the same values as I do, there&rsquo;s not really much point in reading this blog post, you&rsquo;ll probably disagree with me, but the disagreement will most likely be a disagreement in values, not on socket.io&rsquo;s ability to meet those values. We can debate all day what set of values is right for software development, but this is not the blog post for that.</p>
+<p>So what are my values? Here are a selection of values that are relevant to this review:</p>
+<ul>
+  <li>I am a strong proponent of <a href="http://www.reactivemanifesto.com/">reactive systems</a>, that is, systems that are responsive, resilient, scalable and message driven. In this context, streaming with backpressure is something that I see as important - a resilient system needs to propagate backpressure to ensure parts of the system don&rsquo;t get overloaded.</li>
+  <li>I&rsquo;m strongly for tools, libraries and frameworks that enable high productivity software development.</li>
+  <li>I think it&rsquo;s important to have well defined standards and interfaces to maximise compatibility between decoupled implementations.</li>
+</ul><h2 id="The-good"><a class="section-marker" href="#The-good">§</a>The good</h2>
+<p>Why should you use socket.io? I was initially sceptical that socket.io offered much value at all, but over the course of implementing it, I&rsquo;ve changed my view on that.</p>
+<p>A lot of people are saying that with all major browsers supporting WebSockets, there&rsquo;s no need for socket.io anymore. This is based on the assumption that all socket.io offers is a fallback mechanism to long polling when WebSockets are not available. This is completely false, most pertinently because socket.io doesn&rsquo;t even provide that, the fallback to long polling is provided by a protocol that socket.io sits on top of, called engine.io. Here&rsquo;s basically what engine.io provides:</p>
+<ol>
+  <li>Multiple underlying transports (WebSockets and long polling), able to deal with disparate browser capabilities and also able to detect and deal with disparate proxy capabilities, with seamless switching between transports.</li>
+  <li>Liveness detection and maintenance.</li>
+  <li>Reconnection in the case of errors.</li>
+</ol>
+<p>The split between engine.io and socket.io is actually a great thing, engine.io implements layer 5 of the <a href="https://en.wikipedia.org/wiki/OSI_model">OSI model</a> (the session layer), while socket.io implements layer 6, the presentation layer. I don&rsquo;t know if the authors of engine.io/socket.io were aware of how closely their split mapped to the OSI model, but they did a great job here.</p>
+<p>Now, even if you say that wide support of WebSockets makes engine.io redundant, it only makes half of the first point above redundant - it doesn&rsquo;t address proxies that don&rsquo;t support WebSockets (although this can be somewhat worked around by using TLS), and then it doesn&rsquo;t have any mechanism for liveness detection (yes, WebSockets support ping/pong but there&rsquo;s no way to force a browser to send pings or monitor for liveness, so the feature is useless), and browser WebSocket APIs have no in built reconnection features.</p>
+<p>So that&rsquo;s engine.io, back to my earlier point, transparent fallback of transports is not a socket.io feature. So what exactly does socket.io provide then? Socket.io provides three main features:</p>
+<ol>
+  <li>Multiplexing of multiple namespaced streams down a single engine.io session.</li>
+  <li>Encoding of messages as named JSON and/or binary events.</li>
+  <li>Acknowledgement callbacks per event.</li>
+</ol>
+<p>The first two of these I think are important features, the third will feature in what I think is bad about socket.io.</p><h3 id="Namespaces"><a class="section-marker" href="#Namespaces">§</a>Namespaces</h3>
+<p>Multiple namespaces I think is a great feature of socket.io. If you have a rich application that does a lot of push communication back and forth with the server, then you will likely have more than one concern that you&rsquo;re communicating about. For example, I&rsquo;ve been working on a monitoring console, this console dynamically subscribes to many different streams based on what is currently in view, sometimes it needs to view logs, sometimes it needs to view state changes, some times it needs to view events. These different concerns are rendered in different components, and should be kept separate, their lifecycles are separate, the backend implementations of the streams are separate, etc. What we don&rsquo;t want is one WebSocket connection to the server for each of these streams, as that is going to balloon out the number of WebSocket connections. Instead, we want to multiplex them down the one connection, but have both the client and the server treat them as if they were separate connections, able to start and stop independently. This is what socket.io allows. socket.io namespaces can be thought of (and look like) RESTful URL paths. A chat application may encode a connection to a chat room as <code>/chat/rooms/&lt;room-name&gt;</code>, for example. And then a client can connect to multiple rooms simultaneously, disconnect them independently, and handle their events independently.</p>
+<p>Without this feature of socket.io, if you did want to multiplex multiple streams down one connection, you would have to encode your multiplexing protocol, implementing join room and leave room messages for example, and then on the server side you would have to carefully manage these messages, ensuring that subscriptions are cleanly cleaned up. There is often a lot more to making this work cleanly than you might think. socket.io pushes all this hard work into the client/server libraries, so that you as the application developer can just focus on your business problem.</p><h3 id="Event-encoding"><a class="section-marker" href="#Event-encoding">§</a>Event encoding</h3>
+<p>There are two important advantages to event encoding, one I think is less important, and the other is more important.</p>
+<p>The less important one is that when the protocol itself encodes the naming of events, libraries that implement the protocol can then understand more about your events, and provide features on top of this. The JavaScript socket.io implementation does just that, you register handlers per event, passing the library a function to handle each event of a particular name. Without this, you&rsquo;d have to implement that subscription mechanism yourself, you&rsquo;d probably encode the name inside a JSON object that each message sent down the wire would have to conform to, and then you&rsquo;d have to provide a mechanism for registering callbacks for that event.</p>
+<p>The reason why I think this is the less important advantage is because I think callbacks are a bad way to deal with streams of events communicated over the network. Callbacks are great where the list of possible events is far greater than the number of events that you&rsquo;re actually interested in, such as in UIs, because they allow you to subscribe to events on an ad hoc basis. But when events are expensive, such as when they&rsquo;re communicated over a network, then usually you are interested in all events. In those cases, you also often need higher level mechanisms like backpressure, delivery tracking and guarantees, and lifecycle management, callbacks don&rsquo;t allow this, but many streaming approaches like reactive streams do.</p>
+<p>So, what&rsquo;s the more important advantage? It allows the event name to be independent of the actual encoding mechanism, and this is of particular important for binary messages. It&rsquo;s easy to put the event name inside a JSON object, but what happens when you want to send a binary message? You could encode it inside the JSON object, but that requires using base 64 and is inefficient. You could send it as a binary message, but then how do you attach meta data to it like what the name of the event is? You&rsquo;d have to come up with your own encoding to encode the name into the binary, along with the binary payload. socket.io does this for you (it actually splits binary messages into multiple messages, a header text message that contains the name, and then a linked binary message). Without this feature of socket.io, it&rsquo;s I think it&rsquo;s impractical to use binary messages over WebSockets unless you&rsquo;re streaming nothing but binary messages.</p><h2 id="The-bad"><a class="section-marker" href="#The-bad">§</a>The bad</h2>
+<p>So, we&rsquo;ve covered the good, next is the bad.</p><h3 id="Callback-centric"><a class="section-marker" href="#Callback-centric">§</a>Callback centric</h3>
+<p>I&rsquo;ve already touched on this, but in my opinion the callback centric nature of socket.io is real downside. As I said earlier, one of my values is reactive streaming, as this allows resilience properties such as backpressure and message guarantees to be implemented. Callbacks offer no such guarantees, if a callback needs to do a whole bunch of asynchronous tasks, there&rsquo;s no way for it go back to the caller and say &ldquo;hey, can you wait a minute before you invoke me again, I just have to go and store this to a database&rdquo;. And so, an over zealous client can overwhelm a server as it sends events at a higher rate than it can process, causing the server to run out of memory or CPU. Likewise, when sending events, there&rsquo;s no way for the emitter to say to the caller &ldquo;hey, this consumer has a slow network, can you hold off on emitting more events?&rdquo;, and so if the server is producing events too quickly for the consumer, it can run out of memory as it buffers them.</p>
+<p>Of course, whether callbacks or streams are used to implement socket.io servers and clients is completely an implementation concern, and has nothing to do with socket.io. The implementation of socket.io that I wrote is completely streams based, using Akka streams to send events, and so backpressure is supported. On the client side, in the systems I&rsquo;ve worked on, we use <a href="https://github.com/ngrx">ngrx</a> to handle events, which once again is stream based. And the authors of socket.io cannot be entirely faulted for implementing a callback based library, the browser WebSocket APIs only support a callback based mechanism with no support for backpressure.</p>
+<p>Nevertheless, the callback centric design of socket.io manifests itself in the socket.io protocol - socket.io events are not single messages, but lists of messages, akin to argument lists that get passed to a callback, which is an awkward format to work with when streaming. As a socket.io library implementer that wants to provide full support for the socket.io protocol, this makes defining encoders/decoders for events awkward, because you can&rsquo;t just supply an API for encoding/decoding a simple JSON structure, you have to allow decoding/encoding a list of JSON structures. For end users though, this doesn&rsquo;t have to be a major concern - simply design your protocols to only use single argument socket.io events. So I wouldn&rsquo;t treat this as a reason not to use socket.io, it&rsquo;s just a feature (ie, supplying multiple messages rather than single messages in a single event) that I think you shouldn&rsquo;t use.</p><h3 id="Acknowledgements"><a class="section-marker" href="#Acknowledgements">§</a>Acknowledgements</h3>
+<p>socket.io allows each event to carry an acknowledgement, which is essentially a callback attached to the event. It can be invoked by the remote side, which will result in the callback on local side being invoked with the arguments passed by the remote side. They&rsquo;re convenient because they allow you to essentially attach local context to an event that doesn&rsquo;t get sent over the wire (typically, this context is closed over by the callback function), and then when it&rsquo;s invoked you have that context to handle the invocation.</p>
+<p>Acknowledgements are wrong for all the same reasons that socket.io&rsquo;s callback centric approach is wrong, acknowledgements subvert back pressure and provide no guarantees (with a stream you can have causal ordering and use that for tracking to implement at least once delivery guarantees, but acknowledgements have no such ordering and hence no such guarantees can be implemented).</p>
+<p>Once again, this isn&rsquo;t a reason not to use socket.io, you can simply not use this feature of socket.io, it doesn&rsquo;t get in the way if you don&rsquo;t use it.</p><h3 id="No-message-guarantees"><a class="section-marker" href="#No-message-guarantees">§</a>No message guarantees</h3>
+<p>Again, I&rsquo;ve touched on this already, but I think it needs to be stated, socket.io offers no mechanism for message guarantees. The acknowledgements feature can be used to acknowledge that a message was received, but this requires the server to track what messages have been received. A better approach would be a more Kafka like approach, where the client is responsible for its own tracking, and it does this by tracking message offsets, and then when a stream is resumed, after a disconnect for whatever reason, the open message sent to the namespace would include the offset of the last message it received, allowing the server to resume sending messages from that point. This feature incidentally is built into Server Sent Events, so it would be nice to see it in socket.io too.</p>
+<p>Of course, this can be built on top of socket.io, but I think it&rsquo;s something that the transport should provide.</p><h2 id="The-ugly"><a class="section-marker" href="#The-ugly">§</a>The ugly</h2>
+<p>At a high level, I don&rsquo;t think anything about socket.io is really that ugly. My ugly concerns about socket.io mostly exist at a low level, they&rsquo;re things that only an implementer of the protocol will see, but some of them can impact end users.</p><h3 id="No-specification"><a class="section-marker" href="#No-specification">§</a>No specification</h3>
+<p>There is no specification for the socket.io wire protocol. <a href="https://github.com/socketio/socket.io-protocol">This page</a> seems to think it&rsquo;s a specification, but all it describes is some of the abstract concepts, it says nothing about how socket.io packets get mapped down onto the wire.</p>
+<p>Specifications are important for interoperability. The only way I could implement socket.io support is by reverse engineering the protocol, sometimes I had to do this with wireshark, since browser debugging tools don&rsquo;t show the contents of binary WebSocket frames or binary request payloads.</p>
+<p>Now, I&rsquo;ve reversed engineered it and implemented tests, that&rsquo;s a one time problem right? Wrong. Unless the socket.io developers never release another version of socket.io again, there will be incompatibilities in future. New features may be added. The developers might do it in a way that is backwards compatible with their own implementation, but because there&rsquo;s no specification, other implementations may have implemented their parsing differently, which will cause them to break with the new feature. There may be edge cases that I didn&rsquo;t come across. And so on.</p>
+<p>Although the lack of specification primarily impacts me now, it will negatively impact users of socket.io in future, and this needs to be considered when deciding whether socket.io is right for your project or not.</p><h3 id="Weird-encodings"><a class="section-marker" href="#Weird-encodings">§</a>Weird encodings</h3>
+<p>The way socket.io and engine.io are encoded, especially to binary, is very weird in places. For example, there are about 5 different ways that integers get encoded, including one very odd one where each decimal digit is encoded as an octet of value <code>0</code> to <code>9</code>, with a value of <code>255</code> used as a terminator for the number. Which might make sort of make sense (but not really) if you had a use case for arbitrary precision integers, but this is for encoding the length of a payload, where a fixed length word, like 32 bit unsigned network byte order, would have done just fine. I mean, it&rsquo;s not the end of the world to have all these different ways to encode integers, but it really doesn&rsquo;t inspire a lot of confidence in the designers ability to design network protocols that will be tolerant to future evolution.</p>
+<p>People much smarter than us have, over many years, come up with standard ways to encode things, which overcome many gotchas of communicating over a network, including performance concerns, efficiency concerns and compatibility concerns. There are then many libraries that implement these standard ways of encoding things to facilitate writing compatible implementations. Why forgo all that knowledge, experience and available technology, and instead come up with new ways to encode integers? It just seems very odd to me.</p><h3 id="Unnecessary-binary-overhead"><a class="section-marker" href="#Unnecessary-binary-overhead">§</a>Unnecessary binary overhead</h3>
+<p>There&rsquo;s not a lot of use cases for sending binary messages, but many of the use cases I can think of I would want to have as little overhead as possible, such as streaming voice/video. Binary messages in socket.io require sending two messages, one text message that looks like a regular text message, including the name and namespace of the event, and a JSON encoded placeholder for the binary message (it literally looks something like <code>{&quot;_placeholder&quot;:true,&quot;num&quot;:1}</code>), and then the binary message gets sent immediately after. This seems to me to be a lot of overhead, it would have been better to encode the entire event into one message, using a separate binary encoding for encoding the namespace/name and then placing the binary message in that.</p>
+<p>I can understand a little why it is the way it is - because events contain multiple messages, you can mix binary and text messages. Having one reference the other with placeholders is a sensible way to encode that. But, this all comes back to the callback centric nature of socket.io, the reason events contain multiple messages is that callbacks can have multiple arguments, if each event only contained one message then this wouldn&rsquo;t be an issue.</p><h2 id="Conclusion"><a class="section-marker" href="#Conclusion">§</a>Conclusion</h2>
+<p>I think socket.io is a very useful piece of technology, and is incredibly relevant today in spite of the popular view that widespread support for WebSockets makes it redundant. I would recommend that it be used for highly interactive applications, its namespacing in particular is its strongest point.</p>
+<p>When using it, I recommend not taking advantage of the multi-argument and acknowledgement features, rather, simply use plain single argument events. This allows it to integrate well with any reactive streaming technology that you want to use, and allows you to use causal ordering based tracking of events to implement messaging guarantees.</p>
+<p>The underlying protocol is a bit of a mess, and this is compounded by the lack of a specification. That particular point can be fixed, and I hope will be, but it will require more than just someone like myself writing a spec for it, it requires the maintainers of the socket.io reference implementations to be committed to working within the spec, and ensuring compatibility of new features with all implementations going forward. There&rsquo;s no point in having a spec if it&rsquo;s not followed. This will introduce friction into how quickly new features can be added, but this is a natural consequence of more collaboration, and more collaboration is a good thing.</p>
+
+    <div class="postDate">Posted 2 August 2017</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/javascript.html">javascript</a></li>
+    
+      <li><a href="/tags/websockets.html">websockets</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2017-08-02-socket-io";
+      var disqus_title = "socket.io - The good, the bad and the ugly";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

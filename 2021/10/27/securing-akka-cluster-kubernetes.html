@@ -1,0 +1,333 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Securing Akka cluster communication in Kubernetes</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+    <link rel="canonical" href="https://akka.io/blog/article/2021/10/27/akka-cluster-mtls"/>
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2021/10/27/securing-akka-cluster-kubernetes.html">Securing Akka cluster communication in Kubernetes</a></h1>
+
+    <p>A feature of Akka that we&rsquo;ve been using in production for some time now but haven&rsquo;t made a big deal about is Akka remoting&rsquo;s support for using mTLS certificates that are frequently rotated. This support is designed to work with cert-manager and other Kubernetes based secret providers with an absolute minimum of configuration. All you need is two lines of configuration in Akka&rsquo;s configuration file, and you&rsquo;re ready to go on the Akka side.</p>
+<p>This feature is important for secure Akka deployments. Akka clusters use a proprietary protocol to communicate with each other. This protocol by default contains no authentication or encryption, and so to prevent malicious hosts from joining your Akka clusters or eavesdropping on your Akka cluster communication, you need to use mTLS to secure the communication.</p>
+<p>In a Kubernetes environment, many people turn to a service mesh such as Istio, Linkerd or Consul to authenticate and encrypt their network communications, however unfortunately this is not an option for Akka cluster communication. The goal of a service mesh is to ensure that services do not need to be aware of where and how the services they talk to are deployed, and so service meshes hide this, so the service thinks its only talking to one logical service, while the service mesh handles concerns such as load balancing, encryption, authentication and authorization, canary and A/B deploys, and so on. Akka clusters however need to understand how and where they are deployed, in order to implement their stateful features such as sharding, replication and P2P messaging. So, when deploying a service that uses Akka clustering to a service mesh, the Akka cluster communication must bypass the service mesh.</p><h2 id="Prerequesites"><a class="section-marker" href="#Prerequesites">§</a>Prerequesites</h2>
+<p>In this blog post, I&rsquo;ll explain how to provision the certificates needed by Akka using <a href="https://cert-manager.io/">cert-manager</a>. I&rsquo;ll assume you have a Kubernetes cluster with a <a href="https://cert-manager.io/docs/installation/">standard cert-manager installation</a>.</p><h2 id="Understanding-the-certificates"><a class="section-marker" href="#Understanding-the-certificates">§</a>Understanding the certificates</h2>
+<p>First off, let me explain a few concepts. cert-manager has a concept of <code>Certificates</code> and <code>Issuers</code>. A <code>Certificate</code> is a CRD that you deploy that cert-manager will reconcile into a Kubernetes <code>Secret</code> containing a TLS certificate. The <code>Certificate</code> references a <code>Issuer</code>, and the <code>Issuer</code> describes how <code>Certificates</code> that reference it should be issued.</p>
+<p>In order to support frequently rotated certificates, Akka can&rsquo;t just use a self signed certificate, since self signed certificates need to be the same at both ends to authenticate each other properly, and during the time when the certificate is being rotated, two different Akka nodes may have different certificates. Instead, Akka needs certificates issued by a certificate authority (CA). The CA verifies whether a certificate should be trusted or not, so during rotation, both the old and the new certificate can work together, because both are signed by the same CA. So, when we issue our certificates, we&rsquo;ll use cert-managers CA <code>Issuer</code> type.</p>
+<p>The CA <code>Issuer</code> itself needs a certificate to do its signing, and this certificate we&rsquo;ll also provision using <code>cert-manager</code>. That certificate we&rsquo;re not going to rotate - its private key never gets shared with anything outside of <code>cert-manager</code>, and so rotating it is not as necessary. Because of this, it will use a self signed certificate, and provisioning that certificate can be done by using a cert-manager self signed <code>Issuer</code> type.</p>
+<p>So, in total, we&rsquo;re going to have two issuers, a self signed issuer that issues certificates for the CA issuer, and then that CA issuer will issue certificates that are frequently rotated for our Akka service to use. The self signed issuer, certificate, and CA issuer can be reused across different Akka deployments - more on that later.</p><h2 id="Kubernetes-resources"><a class="section-marker" href="#Kubernetes-resources">§</a>Kubernetes resources</h2>
+<p>First we deploy the self signed issuer:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: cert-manager.io/v1
+kind: ClusterIssuer
+metadata:
+  name: self-signed-issuer
+spec:
+  selfSigned: {}
+</code></pre>
+<p>We&rsquo;re creating this for the whole cluster, self signed issuers don&rsquo;t have any state or configuration, there&rsquo;s no reason to have more than one for your entire cluster.</p>
+<p>Next we create a self signed certificate for our CA issuer to use that references this issuer:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: akka-tls-ca-certificate
+  namespace: default
+spec:
+  issuerRef:
+    name: self-signed-issuer
+    kind: ClusterIssuer
+  secretName: akka-tls-ca-certificate
+  commonName: default.akka.cluster.local
+  # 100 years
+  duration: 876000h
+  # 99 years
+  renewBefore: 867240h
+  isCA: true
+  privateKey:
+    rotationPolicy: Always
+</code></pre>
+<p>We&rsquo;ve created this in the <code>default</code> namespace, which will be the same namespace that our Akka service is deployed to. If you&rsquo;re using a different namespace, you&rsquo;ll need to update accordingly.</p>
+<p>The <code>commonName</code> isn&rsquo;t very important, it&rsquo;s not actually used anywhere, though may be useful for debugging purposes if you&rsquo;re ever looking into why a particular certificate isn&rsquo;t trusted by a service. We use a naming convention for common names and DNS names that follows the the pattern <code>&lt;service-name&gt;.&lt;namespace&gt;.akka.cluster.local</code>. The CA uses the same convention without the service name. This convention doesn&rsquo;t need to be followed, but it makes it easy to reason about the purpose of any given certificate.</p>
+<p>Now we create the CA issuer:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: akka-tls-ca-issuer
+  namespace: default
+spec:
+  ca:
+    secretName: akka-tls-ca-certificate
+</code></pre>
+<p>This uses the secret that we configured to be provisioned in the certificate above. Finally, we provision the certificate that our Akka service is going to use - we&rsquo;re assuming that the name of the service in this case is <code>my-service</code>:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: my-service-akka-tls-certificate
+  namespace: default
+spec:
+  issuerRef:
+    name: akka-tls-ca-issuer
+  secretName: my-service-akka-tls-certificate
+  dnsNames:
+  - my-service.default.akka.cluster.local
+  duration: 24h
+  renewBefore: 16h
+  privateKey:
+    rotationPolicy: Always
+</code></pre>
+<p>The actual <code>dnsName</code> configured isn&rsquo;t important, since Akka cluster does not actually use these names for looking up the service, as long as it&rsquo;s unique to the service within the issuer. Akka&rsquo;s mTLS support will verify that the DNS name supplied by an incoming connection matches the DNS name supplied in its own secret, and reject it otherwise. Again, we&rsquo;re using the naming convention for the <code>dnsName</code> mentioned above.</p>
+<p>This certificate is configured to last for 24 hours, and rotate every 16 hours.</p><h2 id="Configuring-Akka"><a class="section-marker" href="#Configuring-Akka">§</a>Configuring Akka</h2>
+<p>To configure your Akka application, you need to have artery based remoting enabled, which will be the case if you&rsquo;ve followed the Akka guide for <a href="https://doc.akka.io/docs/akka-management/current/kubernetes-deployment/forming-a-cluster.html">configuring cluster bootstrap in Kubernetes</a>, with the following additional configuration:</p>
+<pre class="prettyprint"><code>akka.remote.artery {
+  transport = tls-tcp
+  ssl.ssl-engine-provider = &quot;akka.remote.artery.tcp.ssl.RotatingKeysSSLEngineProvider&quot;
+}
+</code></pre>
+<p>This instructs Akka to use TLS, with the <code>RotatingKeysSSLEngineProvider</code>, an SSL engine provider that is designed to pick up Kubernetes TLS secrets, and poll the file system for when they get rotated. It also applies authorization by matching the incoming DNS name with the DNS name of its own certificate.</p><h2 id="Configuring-the-Akka-deployment"><a class="section-marker" href="#Configuring-the-Akka-deployment">§</a>Configuring the Akka deployment</h2>
+<p>Having configured Akka and built a new Docker image, you can now configure your Akka deployment. To do this, you need to mount the certificate at the path <code>/var/run/secrets/akka-tls/rotating-keys-engine</code>. This is the default path that the <code>RotatingKeysSSLEngineProvider</code> uses to pick up its certificates. So, add the following volume to your pod:</p>
+<pre class="prettyprint"><code class="language-yaml">      volumes:
+      - name: akka-tls
+        secret:
+          secretName: my-service-akka-tls-certificate
+</code></pre>
+<p>And then you can mount that in your container:</p>
+<pre class="prettyprint"><code class="language-yaml">        volumeMounts:
+        - name: akka-tls
+          mountPath: /var/run/secrets/akka-tls/rotating-keys-engine
+</code></pre>
+<p>Your complete deployment YAML, configured as described in our <a href="https://doc.akka.io/docs/akka-management/current/kubernetes-deployment/preparing-for-production.html#deployment-spec">Kubernetes deployment guide</a>, might look like this:</p>
+<pre class="prettyprint"><code class="language-yaml">apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-service
+  namespace: default
+  labels:
+    app: my-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-service
+  template:
+    metadata:
+      labels:
+        app: my-service
+    spec:
+      containers:
+      - name: my-service
+        image: my-service:latest
+        readinessProbe:
+          httpGet:
+            path: /ready
+            port: management
+        livenessProbe:
+          httpGet:
+            path: /alive
+            port: management
+        ports:
+        - name: management
+          containerPort: 8558
+          protocol: TCP
+        - name: http
+          containerPort: 8080
+          protocol: TCP
+        resources:
+          limits:
+            memory: 1024Mi
+          requests:
+            cpu: 2
+            memory: 1024Mi
+        volumeMounts:
+        - name: akka-tls
+          mountPath: /var/run/secrets/akka-tls/rotating-keys-engine
+      volumes:
+      - name: akka-tls
+        secret:
+          secretName: my-service-akka-tls-certificate
+</code></pre>
+<p>And now you have secured your Akka cluster communication with mTLS using frequently rotated certificates. This will prevent both eavesdropping, as well as malicious services trying to join your Akka cluster.</p>
+<p>Note that if you apply this to an existing running cluster deployment for the first time, you will need to do an Akka cluster restart. This is because the new nodes will be unable to connect to the old nodes because the new nodes will be attempting to speak TLS to the old nodes, while the old nodes will not be configured to speak TLS. The easiest way to restart the Akka cluster is to scale the deployment down to 0, and then back up to what it was before.</p>
+<p>If you have more Akka services that you wish to deploy in the same namespace, you can reuse the same CA <code>Issuer</code>, you only need to deploy an additional <code>Certificate</code> for each service.</p>
+
+    <div class="postDate">Posted 27 October 2021</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/kubernetes.html">kubernetes</a></li>
+    
+      <li><a href="/tags/akka.html">akka</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2021-10-27-securing-akka-cluster-kubernetes";
+      var disqus_title = "Securing Akka cluster communication in Kubernetes";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

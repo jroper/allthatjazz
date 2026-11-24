@@ -1,0 +1,325 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - 100 Continue support in Play</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2013/07/16/100_continue_support_in_play.html">100 Continue support in Play</a></h1>
+
+    <p>
+The <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html#sec10.1.1">100 Continue</a> status code in the HTTP spec is one that most people know very little about.  You kind of read it, don't really understand what it's talking about, and then just skip over it.  I didn't know what it was about until I became a developer of a web framework.  It turns out to be very useful in certain situations.
+</p>
+
+<p>
+Let's say a client needs to make a very large upload, for example 1GB.  What happens if the server can't satisfy the clients request?  For example, what if the client submitted invalid authentication credentials?  Or the request content was too long?  Or the wrong media type?  HTTP is a half duplex protocol, the client and server take it in turns to speak.  This means that even though the server may know immediately after receiving the request header that it can't process the request, it still has to read the entire request body before it can tell the client that, even if that request body is a 1GB long and takes an hour to upload.  And if you've ever done any large HTTP uploads before, you'll know there's nothing more frustrating than getting to the end of a large upload, only get an error back from the server.
+</p>
+
+<p>
+HTTP has a solution to this, in the form of the <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec14.html#sec14.20"><tt>Expect</tt></a> request header.  The <tt>Expect</tt> header is used to tell the server that the client expects a certain behaviour of it.  There is one defined value for it in the HTTP spec, and that is <a href="http://www.w3.org/Protocols/rfc2616/rfc2616-sec8.html#sec8.2.3"><tt>100-continue</tt></a>.  This tells the server that after sending the request headers, the client will not send the body of the request until it has received a 100 continue response.  Otherwise, the server can immediately return with any other response code.  After receiving a 100 continue response, the client will continue to send the body, and once the server has consumed that, the server will send a second response.
+</p>
+
+<p>
+This can be used whenever the server wants to do validation of just the request headers.  Here are some examples:
+</p>
+
+<ul>
+<li>Authentication - if the client is not authenticated, the server can respond with 401 Unauthorized.</li>
+<li>Authorisation - if the client is not authorised to make the request, the server can respond with 403 Forbidden.</li>
+<li>Resource existence - if the client has attempted to put a resource at a location that doesn't exist, the server can respond with 404 Not Found</li>
+<li>Content length limits - if the client hasn't sent a content length, the server can respond with 411 Length Required, or if the content length is larger than the server is willing to accept, the server can respond with 413 Request Entity Too Large</li>
+<li>Content type validation - if the client is sending a content type that the server doesn't support, the server can respond with 415 Unsupported Media Type</li>
+</ul>
+
+<h2>100 continue support in Play Framework</h2>
+
+<p>
+So with all this in mind, how can this be implemented in Play framework?  As you may be aware, at the lowest level, a Play action looks like this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">trait EssentialAction extends (RequestHeader =&gt; Iteratee[Array[Byte], Result])
+</code></pre>
+
+<p>
+The iteratee that the essential action function returns is what consumes the body.  An iteratee can be in one of three states, done, cont (ready to receive more input), or error.  When Play invokes an action to get the iteratee for the body, and a client has specified the <tt>Expect: 100-continue</tt> header, Play is able to check if that iteratee is ready to receive input, or if it's in a done or error state.  If it's in a done or error state, Play will send the result immediately without consuming the body.  If it's in the cont state, then Play will send a 100 continue response, and then feeds the body into the iteratee.
+</p>
+
+<p>
+So for an action to take advantage of this, it just needs to ensure that it returns a done iteratee if the validation fails.  Plays built in authentication action does just this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def Authenticated[A](
+  userinfo: RequestHeader =&gt; Option[A],
+  onUnauthorized: RequestHeader =&gt; Result)(action: A =&gt; EssentialAction): EssentialAction = {
+
+  EssentialAction { request =&gt;
+    userinfo(request).map { user =&gt;
+      action(user)(request)
+    }.getOrElse {
+      Done(onUnauthorized(request), Input.Empty)
+    }
+  }
+}
+</code></pre>
+
+<p>
+In addition, all of Plays body parsers, when they check the content type, will return a done iteratee if the content type is wrong.  So if I have an action that looks like this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def upload = Authenticated(
+    rh =&gt; rh.headers.get("Authentication-Token").filter(_ == "secret-token"), 
+    rh =&gt; Forbidden("Authentication required")
+) { token =&gt; Action(parse.text) { request =>
+  Ok("Got body that was " + request.body.length + " characters long")
+}}
+</code></pre>
+
+<p>
+And then I submit the following request header:
+</p>
+
+<pre>
+POST /upload HTTP/1.1
+Host: localhost
+Authentication-Token: secret-token
+Content-Type: text/plain
+Content-Length: 12
+Expect: 100-continue
+</pre>
+
+<p>
+Play will immediately respond with:
+</p>
+
+<pre>
+100 Continue HTTP/1.1
+</pre>
+
+<p>
+At which point, I can then send my body, and Play will send the response.  The whole transaction will look like this:
+</p>
+
+<pre>
+<span style="color: blue">C: POST /upload HTTP/1.1
+C: Host: localhost
+C: Authentication-Token: secret-token
+C: Content-Type: text/plain
+C: Content-Length: 12
+C: Expect: 100-continue
+C: </span>
+S: HTTP/1.1 100 Continue
+S:
+<span style="color: blue">C: Hello world!</span>
+S: HTTP/1.1 200 OK
+S: Content-Type: text/plain;charset=utf-8
+S: Content-Length: 37
+S:
+S: Got body that was 12 characters long
+</pre>
+
+<p>
+However, if I don't send an authentication token, or if my content type is wrong, this is what will happen:
+</p>
+
+<pre>
+<span style="color: blue">C: POST /upload HTTP/1.1
+C: Host: localhost
+C: Content-Type: text/plain
+C: Content-Length: 12
+C: Expect: 100-continue
+C: </span>
+S: HTTP/1.1 403 Forbidden
+S: Content-Type: text/plain;charset=utf-8
+S: Content-Length: 23
+S:
+S: Authentication required
+</pre>
+
+<p>
+And so even though in the request header I said that the content length was 12, I didn't have to upload it, because I sent the expect header, and Play didn't send a 100 continue response back, instead it was able to immediately tell me that the request would fail.  Obviously with such a small body, this doesn't make a lot of sense, but with a body gigabytes in length, it means I don't have to spend however many hours uploading it before I finally find out that I wasn't allowed to upload it.
+</p>
+
+    <div class="postDate">Posted 16 July 2013</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/play.html">play</a></li>
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+      <li><a href="/tags/http.html">http</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2013-07-16-100_continue_support_in_play";
+      var disqus_title = "100 Continue support in Play";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

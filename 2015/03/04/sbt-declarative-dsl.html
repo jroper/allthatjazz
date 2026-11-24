@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - sbt - A declarative DSL</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2015/03/04/sbt-declarative-dsl.html">sbt - A declarative DSL</a></h1>
+
+    <p>This is my second post in a series of posts about sbt. The first post, <a href="2015/03/03/sbt-task-engine.html">sbt - A task engine</a>, looked at sbt&rsquo;s task engine, how it is self documenting, making tasks discoverable, and how scopes allow heirarchical fallbacks. In this post we&rsquo;ll take a look at how the sbt task engine is declared, again taking a top down approach, rooted in practical examples.</p><h2 id="Settings-are-not-settings"><a class="section-marker" href="#Settings-are-not-settings">§</a>Settings are not settings</h2>
+<p>In the previous post, we were introduced to settings, being a specialisation of tasks that are only executed once at the start of an sbt session. File that bit of knowledge away, and now reset your definition of setting to nothing. I&rsquo;m guessing this is a relic of past versions of sbt, but the word setting in sbt can mean two distinct things, one is a task that&rsquo;s executed at the start of the session, the other is a task (or setting, as in executed at start of session) declaration. No clearer?</p>
+<p>Let&rsquo;s introduce another bit of terminology, a task key. A task key is a string and a type, the string is the name of the task, it&rsquo;s how you reference it on the command line. The type is the type that the task produces. So the <code>sources</code> task has a name of <code>&quot;sources&quot;</code>, and a type of <code>Seq[File]</code>. It is defined in <a href="https://github.com/sbt/sbt/blob/v0.13.7/main/src/main/scala/sbt/Keys.scala#L85"><code>sbt.Keys</code></a>:</p>
+<pre class="prettyprint"><code class="language-scala">val sources = TaskKey[Seq[File]](&quot;sources&quot;, &quot;All sources, both managed and unmanaged.&quot;, BTask)
+</code></pre>
+<p>You can see it also has a description and a rank, those are not really important to us now. The thing that uniquely defines this task key is the <code>sources</code> string. You could define another <code>sources</code> key elsewhere, as long as they have the same name, they will be considered the key for the same task. Of course, if you define two tasks using the same key name, but different key types, that&rsquo;s not allowed, and sbt will give you an error.</p>
+<p>In addition to <code>TaskKey</code>&rsquo;s there are also <code>SettingKey</code>&rsquo;s, this is setting as in only executed once per session. Now these keys by themselves do nothing. They only do something when you declare some behaviour for them. So, a setting as in a task declaration is a task or setting key, potentially scoped, with some associated behaviour. For the remainder of this post, when I say setting, that&rsquo;s what I&rsquo;m referring to.</p><h2 id="Settings-are-executed-like-a-program"><a class="section-marker" href="#Settings-are-executed-like-a-program">§</a>Settings are executed like a program</h2>
+<p>Defining sbt&rsquo;s task engine is done by giving sbt a series of settings, each setting declaring a task implementation. sbt then executes those settings in order. Tasks can be declared multiple times by multiple settings, the last one to execute wins.</p>
+<p>So where do these settings come from? They come from many places. Most obviously, they come from the build file. But most settings don&rsquo;t come from there - as you&rsquo;re aware, sbt defines many, many fine grained tasks, but you don&rsquo;t have to declare settings for these yourself. Most of the settings come from sbt plugins. One in particular that is enabled by default is the <code>JvmPlugin</code>. This contains all the settings necessary for building a Java or Scala program, including settings that declare the <code>sources</code> task that we saw yesterday. Plugin settings are executed before the settings in your build file, this means that any settings you declare in your build file will override the settings declared by the plugins.</p>
+<p>This ordering of settings is important to note, it means settings have to be read from top to bottom. I have handled a number of support cases and mailing list questions where people haven&rsquo;t realised this, they have declared a setting, and then after that included a sequence of settings from elsewhere in their build that redeclares the setting. They expected their setting to take precedence, but since their setting came before the setting from the sequence, the setting from the sequence overwrites it.</p><h2 id="sbt-build-file-syntax"><a class="section-marker" href="#sbt-build-file-syntax">§</a>sbt build file syntax</h2>
+<p>We&rsquo;re about to get into some concrete examples of declaring settings, so before we do that we better cover the basics of the sbt build file. sbt builds can either be specified in plain <code>*.scala</code> files, or in sbts own <code>*.sbt</code> file format. As of sbt 0.13.7, the sbt format has become powerful enough that there is really not much that you can&rsquo;t do with it, so we&rsquo;re only going to look at that.</p>
+<p>An sbt file may have any name, convention is that a projects main build file be called <code>build.sbt</code>, but that is only a convention. The file may contain a series of Scala statements and expressions, and it&rsquo;s important here to distinguish between statements and expressions. What&rsquo;s the difference? A statement doesn&rsquo;t return a value. For example:</p>
+<pre class="prettyprint"><code class="language-scala">val foo = &quot;bar&quot;
+</code></pre>
+<p>This is a statement, it has assigned the val <code>foo</code> to <code>&quot;bar&quot;</code>, but this assignment doesn&rsquo;t return a value. In contrast:</p>
+<pre class="prettyprint"><code class="language-scala">5 + 4
+</code></pre>
+<p>This is an expression, it returns a value of type <code>Int</code>.</p>
+<p>Expressions in an sbt file must have a type of either <code>Setting[_]</code> or <code>Seq[Setting[_]]</code>. sbt will evaluate all these exrpessions, and add them to the settings for your build. Any expression in your sbt file that isn&rsquo;t of one of those types will generate an error.</p>
+<p>Statements can be anything. They can be utility methods, vals, lazy vals, whatever. In most cases, sbt ignores them, but that doesn&rsquo;t make them useless, you can use them in other expressions or statements, to help you define your build. There is one type of statement though that sbt doesn&rsquo;t ignore, and that is statements that assign a val to a project, this is how projects are defined:</p>
+<pre class="prettyprint"><code class="language-scala">lazy val sbtFunProject = project in file(&quot;.&quot;)
+</code></pre>
+<p>The final thing to know about sbt build files is that sbt automatically brings in a number of imports. For example, <code>sbt._</code> is imported, as is <code>sbt.Keys._</code>, so you have access to the full range of built in task keys that sbt defines without having to import them yourself. sbt also brings in imports declared by plugins, making it straight forward to use those plugins.</p><h2 id="Declaring-a-setting"><a class="section-marker" href="#Declaring-a-setting">§</a>Declaring a setting</h2>
+<p>The process of declaring a setting is done by taking a task key, optionally apply a scope to it, and then declaring an implementation for that task. Here&rsquo;s a very basic example:</p>
+<pre class="prettyprint"><code class="language-scala">name := &quot;sbt-fun&quot;
+</code></pre>
+<p>In this case we&rsquo;re declaring the implementation of the <code>name</code> task to simply be a static value of <code>&quot;sbt-fun&quot;</code>. Note that the above is a expression, not a statement. <code>:=</code> is not a Scala language feature, it is actually a method that sbt has provided. sbt&rsquo;s syntax for declaring settings is a pure scala DSL. If this syntax confuses you, then I strongly recommend that you read a post I wrote a few years ago called <a href="2012/03/19/three_things_i_had_to_learn_about_scala_before_it_made_sense.html">Three things I had to learn about Scala before it made sense</a>. This post explains how DSL&rsquo;s are implemented in Scala, and is essential reading before you read on in this post if you don&rsquo;t understand that already.</p>
+<p>What if we want to declare our own implementation of the <code>sources</code> task? Remembering that we want it scoped to <code>compile</code>, we can do this:</p>
+<pre class="prettyprint"><code class="language-scala">sources in Compile := Seq(file(&quot;src/main/scala/MySource.scala&quot;))
+</code></pre>
+<p>Again we&rsquo;re only setting a static value for this task to return, but this time you can see how we&rsquo;ve scoped the <code>sources</code> task in the <code>compile</code> scope. Note that configurations such as <code>compile</code> and <code>test</code> are available through capitalised vals, in scope in your build.</p><h2 id="Back-to-first-principles"><a class="section-marker" href="#Back-to-first-principles">§</a>Back to first principles</h2>
+<p>What if we want to declare a dependency on another task? Let&rsquo;s say we want to declare <code>sources</code> to be, as it&rsquo;s described, all managed and unmanaged sources. If you&rsquo;ve used sbt before, you probably know that you can use this syntax:</p>
+<pre class="prettyprint"><code class="language-scala">sources := managedSources.value ++ unmanagedSources.value
+</code></pre>
+<p>This was introduced is sbt 0.13, and it&rsquo;s actually implemented by a macro that does some magic for you. It&rsquo;s great, I use that syntax all the time, and so should you. However, as with anything that does magic for you, if you don&rsquo;t understand what it&rsquo;s doing for you and how it does it, you can run into troubles.</p>
+<p>As I described in the last post, sbt is a task engine, and tasks declare dependencies that are executed before, and provided as input, to them. In the above example, it doesn&rsquo;t look like this is happening at all, what it looks like is that when the <code>sources</code> task is executed, it executes the <code>managedSources</code> task by calling <code>value</code>, and the <code>unmanagedSources</code> task by calling <code>value</code>, and then concatenates their results together. There is a macro that is transforming this code to something that does declare dependencies, and takes the inputs of those dependencies and passes them to the implementation.</p>
+<p>So in order to understand what the macro is doing for us, let&rsquo;s implement this ourselves manually - let&rsquo;s declarce this setting from first principles.</p>
+<p>Firstly, we&rsquo;re going to use the <code>&lt;&lt;=</code> operator instead, this is how to say that I am declaring this task to be dependent on other tasks. Now, we could do a very straight forward declaration to another task:</p>
+<pre class="prettyprint"><code class="language-scala">sources &lt;&lt;= unmanagedSources
+</code></pre>
+<p>This will say that the <code>sources</code> task has a dependency on <code>unmanagadSources</code>, and will take the output of <code>unmanagedSources</code> as is, and return it as the output of <code>sources</code>. What if we wanted to change that value before returning it? We can do that using the <code>map</code> method:</p>
+<pre class="prettyprint"><code class="language-scala">sources &lt;&lt;= unmanagedSources.map(files =&gt; files.filterNot(_.getName.startsWith(&quot;_&quot;)))
+</code></pre>
+<p>So now we&rsquo;ve filtered out all the files that start with <code>_</code> (note that sbt already provides an <code>excludesFilter</code> task that can be used to configure this, this is just an example).</p>
+<p>At this point let&rsquo;s take a step back and think about what the code above has done. For one, nothing has yet been executed, at least not the task implementation. That <code>&lt;&lt;=</code> method returns an object of type <code>Setting</code>. This setting has the following attributes:</p>
+<ul>
+  <li>The key (potentially scoped) that it is the task declaration for, in this case, <code>sources</code>.</li>
+  <li>The keys (potentially scoped) of tasks that it depends on, in this case, <code>unmanagedSources</code>.</li>
+  <li>A function that takes the output of the tasks that it depends as input parameters, executes the task, and returns the output of the task being declared (that is, the function we passed to the <code>map</code> method, that filters out all files that start with <code>_</code>).</li>
+</ul>
+<p>You can see here that we haven&rsquo;t actually executed anything in the task, we have only declared how the task is implemented. So when sbt goes to execute the sources task, it will find this declaration, execute the dependencies, and then execute the callback. This is why I&rsquo;ve called this blog post &ldquo;sbt - A declarative DSL&rdquo;. All our settings just declare how tasks are implemented, they don&rsquo;t actually execute anything.</p>
+<p>So, what if we want to depend on two different tasks? Through the magic of the sbt DSL, we can put them in a tuple, and then map the tuple:</p>
+<pre class="prettyprint"><code class="language-scala">sources &lt;&lt;= (unmanagedSources, managedSources).map { (unmanaged, managed) =&gt; unmanaged ++ managed) }
+</code></pre>
+<p>And now we actually have our first principles implementation of the <code>sources</code> task. Sort of, we haven&rsquo;t scoped it to <code>compile</code>, but that&rsquo;s not hard to do:</p>
+<pre class="prettyprint"><code class="language-scala">sources in Compile &lt;&lt;= (unmanagedSources in Compile, managedSources in Compile).map(_ ++ _)
+</code></pre>
+<p>For brevity I&rsquo;ve used a shorter syntax for concatenating the two sources sequences.</p><h2 id="sbt-uses-macros-heavily"><a class="section-marker" href="#sbt-uses-macros-heavily">§</a>sbt uses macros heavily</h2>
+<p>So now that we&rsquo;ve seen how to declare tasks from from first principles, let&rsquo;s see how the macros work. We have our declaration from before:</p>
+<pre class="prettyprint"><code class="language-scala">sources := { managedSources.value ++ unmanagedSources.value }
+</code></pre>
+<p>I&rsquo;ve inserted the curly braces to make it clear what is being passed to the <code>:=</code> macro. The <code>:=</code> macro will go through the block of code passed to it, and find all the instances of where <code>value</code> is called, and gather all the keys that it is invoked on. It will then generate Scala code (or rather AST) that builds those keys as a tuple, and then invokes map. To the map call, it will pass the original code block, but replacing all the keys that had value on them with parameters that are taken as the input arguments to the function passed to map. Essentially, it builds exactly the same code that we implemented in our first principles implementation.</p>
+<p>Now, it&rsquo;s important to understand how these macros work, because when you try to use the <code>value</code> call outside of the context of a macro, you will obviously run into problems. An important thing to realise is that the code generated by the macro never actually invokes <code>value</code>, <code>value</code> is just a place holder method used to tell the macro to extract these keys out to be dependencies that get mapped. The <code>value</code> method itself is in fact a macro, one that if you invoke it outside of the context of another macro, will result in a compile time error, the exact error message being <code>value can only be used within a task or setting macro, such as :=, +=, ++=, Def.task, or Def.setting.</code>. And you can see why, since sbt settings are entirely declarative, you can&rsquo;t access the value of a task from the key, it doesn&rsquo;t make sense to do that.</p>
+<p>From now on in this post we&rsquo;ll switch to using the macros, but remember what these macros compile to.</p><h2 id="Redeclaring-tasks"><a class="section-marker" href="#Redeclaring-tasks">§</a>Redeclaring tasks</h2>
+<p>So far we&rsquo;ve seen how to completely overwrite a task. What if you don&rsquo;t want to ovewrite the task, you just want to modify its output? sbt allows you to make a task depend on itself, if you do that, the task will depend on the old implementation of itself, giving the output of that implementation to you as your input. In the previous blog post, I brought up the possibility of only compiling source files with a certain annotation inside them, let&rsquo;s say we&rsquo;re only going to compile source files that contain the text <code>&quot;COMPILE ME&quot;</code>. Here&rsquo;s how you might implement that, depending on the existing <code>sources</code> implementation:</p>
+<pre class="prettyprint"><code class="language-scala">sources := {
+  sources.value.filter { sourceFile =&gt;
+    IO.read(sourceFile).contains(&quot;COMPILE ME&quot;)
+  }
+}
+</code></pre>
+<p>sbt also provides a short hand for doing this, the <code>~=</code> operator, which takes a function that takes the old value and returns the new value:</p>
+<pre class="prettyprint"><code class="language-scala">sources ~= _.filter { sourceFile =&gt;
+  IO.read(sourceFile).contains(&quot;COMPILE ME&quot;)
+}
+
+</code></pre>
+<p>Another convenient shorthand for modifying the old value of a task that sbt provides, and that you have likely come across before, is the <code>+=</code> and <code>++=</code> operators. These take the old value, and append the item or sequence of items produced by your new implementation to it. So, to add a file to the sources:</p>
+<pre class="prettyprint"><code class="language-scala">sources += file(&quot;src/other/scala/Other.scala&quot;)
+</code></pre>
+<p>Or to add multiple files:</p>
+<pre class="prettyprint"><code class="language-scala">sources ++= Seq(
+  file(&quot;src/other/scala/Other.scala&quot;),
+  file(&quot;src/other/scala/OtherOther.scala&quot;)
+)
+</code></pre>
+<p>These of course can depend on other tasks through the <code>value</code> macro, just like when you use <code>:=</code>:</p>
+<pre class="prettyprint"><code class="language-scala">sources ++= Seq(
+  (sourceDirectory.value / &quot;other&quot; / &quot;scala&quot;).***
+)
+</code></pre>
+<p>The <code>***</code> method loads every file from a directory recursively.</p><h2 id="Scope-me-up"><a class="section-marker" href="#Scope-me-up">§</a>Scope me up</h2>
+<p>We&rsquo;ve talked a little bit about scopes, but most of our examples so far have excluded them for brevity. So let&rsquo;s take a look at how to scope settings and their dependencies.</p>
+<p>To apply a scope to a setting, you can use the <code>in</code> method:</p>
+<pre class="prettyprint"><code class="language-scala">sources in Compile += file(&quot;src/other/scala/Other.scala&quot;)
+</code></pre>
+<p>Applying multiple scopes can be done by using multiple <code>in</code> calls, for example:</p>
+<pre class="prettyprint"><code class="language-scala">excludeFilter in sbtFunProject in unmanagedSources in Compile := &quot;_*&quot;
+</code></pre>
+<p>Or, they can also be done by passing multiple scopes to the <code>in</code> method, in the order project, configuration then task:</p>
+<pre class="prettyprint"><code class="language-scala">excludeFilter in (sbtFunProject, Compile, unmanagedSources) := &quot;_*&quot;
+</code></pre>
+<p>The same syntax can be used when depending on settings, though make sure you put parenthesis around the whole scoped setting in order to invoke the <code>value</code> method on it:</p>
+<pre class="prettyprint"><code class="language-scala">(sources in Compile) := 
+  (managedSources in Compile).value ++ 
+  (unmanagedSources in Compile).value
+</code></pre><h2 id="Conclusion"><a class="section-marker" href="#Conclusion">§</a>Conclusion</h2>
+<p>In the first post in this series, we were introduced to the concepts behind sbt and its task engine, and how to explore and discover the task graphs that sbt provides. In this post we saw the practical side of how task dependencies and implementations are declared, using both the map method to map dependency keys, as well as macros. We saw how to modify existing task declarations, as well as how to use scopes.</p>
+<p>One thing I&rsquo;ve avoided here is showing cookbooks of how to do specific tasks, for example, how to add a source generator. The <a href="http://www.scala-sbt.org/0.13/docs/index.html">sbt documentation</a> is really not bad for this, especially for cookbook type documentation, but I also hope that after reading these posts, you aren&rsquo;t as dependent on copying and pasting sbt configuration, but rather can use the tools built in to sbt to discover the structure of your build, and modify it accordingly.</p>
+
+    <div class="postDate">Posted 4 March 2015</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+      <li><a href="/tags/sbt.html">sbt</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2015-03-04-sbt-declarative-dsl";
+      var disqus_title = "sbt - A declarative DSL";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

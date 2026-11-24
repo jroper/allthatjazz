@@ -1,0 +1,267 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Facebook OpenID integration in Pebble</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2010/06/18/facebook_openid_integration_in_pebble.html">Facebook OpenID integration in Pebble</a></h1>
+
+    <p>
+I've taken a shot at implementing Facebook OpenID integration into Pebble.  To see the results, at the bottom of this page, click "Add Comment", and then click the Facebook Login link.
+</p>
+
+<p>
+Implementing this has been pretty simple.  All the magic happens on the client side, at no point does Pebble make a request on Facebook, and the user is, as far as Pebble is concerned on the server side, never authenticated or trusted in any way.  All this integration does is puts the users name, profile picture and profile link in the author, avatar and website fields of the Pebble comment form.
+</p>
+
+<p>
+The bulk of the work has been in modifying pebble to handle profile pictures with comments, and adding a plugin point for this type of plugin.  What follows is a quick tutorial of how to implement a similar OpenID authentication on your site.
+</p>
+
+<h2>1. Create an application on Facebook</h2>
+
+<p>
+Facebook provides some simple instructions on how to do this <a href="http://wiki.developers.facebook.com/index.php/Connect/Setting_Up_Your_Site">here</a>.  You will need to create a new application for every different website that you want to integrate with, as Facebook will validate the base URL that it forwards to.
+</p>
+
+<h2>2. Add the login button to your page</h2>
+
+<p>
+There are a number of ways to do this, but the simplest way is to use the Facebook Markup Language (FML).  In the next step we'll configure Facebook to render FML tags, for now, the only thing you need to do is put the following code where you want the login button to appear:
+</p>
+
+<pre class="prettyprint"><code class="language-html">&lt;fb:login-button/&gt;
+</code></pre>
+
+<h2>3. Initialise the Facebook API</h2>
+
+<p>
+The Facebook client side libraries require that they be initialised.  This is also the stage where Facebook will render any FML tags you've included in the page.  Initialising the Facebook client side API is best done at the bottom of the page, so that it doesn't slow down the loading of the rest of the page.  At this stage you'll need the Facebook application ID from the application you created in step one:
+</p>
+
+<pre class="prettyprint"><code class="language-html">&lt;div id="fb-root"&gt;&lt;/div&gt;
+&lt;script src="http://connect.facebook.net/en_US/all.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+    FB.init({appId: "YOUAPPIDHERE", status: false, cookie: true, xfbml: true});
+&lt;/script&gt;
+</code></pre>
+
+<h2>4. Write a function to handle a logged in user</h2>
+
+<p>
+This is where we do most of the work.  The Facebook javascript API provides an event library, and we can use this to update our page with the users details after they log in to Facebook.  This event will only fire when the user logs in or logs out, if a user comes back to your site, and they are already logged in, the event won't fire, even if they click log in, hence we also need to check if the user is already logged in when the page loads.  So we're going to write a function that will handle both of these situations.  The function accepts a Facebook response object, and checks if the response has a session.  This indicates that the user is logged in.  If they are logged in, we make a call on the <tt>/me</tt> resource of the Facebook Graph API, which will return the users name, link to their profile, and other things.  This function can go anywhere in your code, preferably in a Javascript file along with the rest of your scripts:
+</p>
+
+<pre class="prettyprint"><code class="language-javascript">  function updateFacebookCommentAuthor(response) {
+    if (response.session) {
+      FB.api("/me", function(response) {
+        var avatar = "http://graph.facebook.com/" + response.id + "/picture?type=square";
+        document.forms["commentForm"].elements["author"].value = response.name;
+        document.forms["commentForm"].elements["website"].value = response.link;
+        document.forms["commentForm"].elements["avatar"].value = avatar;
+      });
+    }
+  }
+</code></pre>
+
+<h2>5. Subscribe to login events</h2>
+
+<p>
+Lastly, we want the above function to be called when a page loads if the user is already logged in, and if a user logs in clicking the login function.  This can either be done at the bottom of the page after the Facebook API is initialised, or it can be done in in the window on load event.  Pebble uses prototype, so I bind it to the window on load event using that:
+</p>
+
+<pre class="prettyprint"><code class="language-javascript">  Event.observe(window, "load", function() {
+    FB.Event.subscribe("auth.sessionChange", updateFacebookCommentAuthor);
+    FB.getLoginStatus(updateFacebookCommentAuthor);
+  });
+</code></pre>
+
+<p>
+This is all you need for basic OpenID authentication using Facebook.  Of course, you might want to, instead of just populating the form, actually render the username and profile picture in the page, as has been done in Pebble.  Another thing you may want to provide is the ability for the user to log out, in case they are using someone else's computer and that person is logged in.
+</p>
+
+    <div class="postDate">Posted 18 June 2010</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/facebook.html">facebook</a></li>
+    
+      <li><a href="/tags/openid.html">openid</a></li>
+    
+      <li><a href="/tags/pebble.html">pebble</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2010-06-18-facebook_openid_integration_in_pebble";
+      var disqus_title = "Facebook OpenID integration in Pebble";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

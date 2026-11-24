@@ -1,0 +1,262 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - The Noop Monad - doing nothing safely</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2015/04/01/noop-monad.html">The Noop Monad - doing nothing safely</a></h1>
+
+    <p>If you&rsquo;re a fan of functional programming, as I am, you&rsquo;ll know that one of the great things about it is how useful it is. But that isn&rsquo;t the only great thing about functional programming, functional programming is also great for when you want to do nothing at all. Some might even say that doing nothing at all is where functional programming really shines.</p>
+<p>So today I&rsquo;m going to introduce a monad that surprisingly isn&rsquo;t talked about a lot - the noop monad. The noop monad does nothing at all, but unlike noops in other programming paradigms, the noop monad does nothing safely.</p><h2 id="A-demo"><a class="section-marker" href="#A-demo">§</a>A demo</h2>
+<p>For this demonstration, I&rsquo;m going to use Scala, with Scalaz to implement the monad. Let&rsquo;s start off with the <code>Noop</code> type:</p>
+<pre class="prettyprint"><code class="language-scala">/**
+ * A noop of type T
+ */
+sealed trait Noop[T] {
+
+  /**
+   * Run the noop
+   */
+  def run: Unit
+}</code></pre>
+<p>As you can see, the <code>Noop</code> type has a type parameter, so we can do nothing of various types. We can also see the <code>run</code> function, and it returns <code>Unit</code>. Now typically in functional programming, returning <code>Unit</code> is considered a bad thing, because <code>Unit</code> is not a value, so any pure function that returns <code>Unit</code> must have done nothing. But since <code>Noop</code> actually does do nothing, this is the one exception to that rule. So the <code>run</code> function can be evaluated to do the nothing of the type that this particular <code>Noop</code> does.</p>
+<p>Now, let&rsquo;s say I have method that calculates all the primes up to a given number. Here&rsquo;s its signature:</p>
+<pre class="prettyprint"><code class="language-scala">def calculatePrimes(upTo: Int): List[Int]</code></pre>
+<p>And let&rsquo;s say I want to get a list of all the <code>Int</code> primes, I can use the above method like so:</p>
+<pre class="prettyprint"><code class="language-scala">calculatePrimes(Int.MaxValue)</code></pre>
+<p>But wait, you say! That code is going to be very expensive to run, it&rsquo;s likely to take a very, very long time, and you have better things to do. So, you want to ensure that the code doesn&rsquo;t run. This is where the noop monad comes on the scene, using the <code>point</code> method, you can ensure that it safely doesn&rsquo;t run:</p>
+<pre class="prettyprint"><code class="language-scala">val noopAllIntPrimes = calculatePrimes(Int.MaxValue).point[Noop]</code></pre>
+<p>And then, when you actually don&rsquo;t want to run it, you can do that by evaluating the <code>run</code> function:</p>
+<pre class="prettyprint"><code class="language-scala">noopAllIntPrimes.run</code></pre>
+<p>For those unfamiliar with scalaz and functional programming, a monad is an applicative, and an applicative is something that lets you create an instance of the applicative from a value. The method on <code>Applicative</code> for doing this is called <code>point</code>, in other languages it&rsquo;s also called <code>pure</code>.</p>
+<p>So, we can see that <code>Noop</code> is an applicative, but can we <code>flatMap</code> it? What if you don&rsquo;t want to sum all those prime numbers, and then you certainly don&rsquo;t want to convert that result to a <code>String</code>? The noop monad lets you do that:</p>
+<pre class="prettyprint"><code class="language-scala">val summedPrimesString = for {
+  primes &lt;- noopAllIntPrimes
+  summed &lt;- primes.reduce(_ + _).point[Noop]
+  asString &lt;- summed.toString.point[Noop]
+} yield asString</code></pre>
+<p>And so then to ensure that we don&rsquo;t actually do all this expensive computation, we can run it as before:</p>
+<pre class="prettyprint"><code class="language-scala">summedPrimesString.run</code></pre><h2 id="Advantages"><a class="section-marker" href="#Advantages">§</a>Advantages</h2>
+<p>We can see how the noop monad can be used to do nothing, but what are the advantages of using the noop monad compared to some other methods of doing nothing? I&rsquo;m going to highlight three advantages that I think really demonstrate the value of doing nothing in a monadic way.</p><h3 id="Runtime-optimisation"><a class="section-marker" href="#Runtime-optimisation">§</a>Runtime optimisation</h3>
+<p>This is often an advantage of functional programming in general, but the noop monad is the exemplar of optimization in functional programming. Let&rsquo;s have a look at the implementation of the noop monads <code>point</code> method:</p>
+<pre class="prettyprint"><code class="language-scala">def point[A](a: =&gt; A): Noop[A] = Noop[A]</code></pre>
+<p>Here we can see that not only is the passed in value not evaluated, it&rsquo;s not even referenced in the returned <code>Noop</code>. But how can the noop monad do this? Since the noop monad knows that you don&rsquo;t want to do anything at all, it is able to infer that therefore it will not need to evaluate the value, and therefore it doesn&rsquo;t need to hold a reference to the passed in value. But this advanced optimisation doesn&rsquo;t stop there, let&rsquo;s have a look at the implementation of <code>bind</code>:</p>
+<pre class="prettyprint"><code class="language-scala">def bind[A, B](fa: Noop[A])(f: A =&gt; Noop[B]): Noop[B] = Noop[B]</code></pre>
+<p>Here we can see a double optimisation. First, the passed in <code>Noop</code> is not referenced. The noop monad can do this because it infers that since you don&rsquo;t want to do anything, you don&rsquo;t need the nothing that you passed in. Secondly, the passed in bind function is never evaluated. As with the other parameter, the noop monad can infer that since the passed in <code>Noop</code> does nothing, there will be nothing to pass to the passed in function, and therefore, the function will never be evaluated.</p>
+<p>As you can see, particularly for performance minded developers, the noop monad is incredibly powerful in its ability to optimise your code at runtime to do as little of nothing as possible.</p><h3 id="Code-optimisation"><a class="section-marker" href="#Code-optimisation">§</a>Code optimisation</h3>
+<p>But performance isn&rsquo;t the only place that the noop monad can help with optimisation, the noop monad can also help at optimising your code to ensure it is as simple and concise as possible.</p>
+<p>Let&rsquo;s take our previous example of summing primes:</p>
+<pre class="prettyprint"><code class="language-scala">(for {
+  primes &lt;- calculatePrimes(Int.MaxValue).point[Noop]
+  summed &lt;- primes.reduce(_ + _).point[Noop]
+  asString &lt;- summed.toString.point[Noop]
+} yield asString).run</code></pre>
+<p>Now, this isn&rsquo;t bad looking code, but it does feel a little too complex when all we wanted to do in the first place was nothing. So how can we simplify it? Well firstly, you&rsquo;ll notice that we don&rsquo;t want to convert the summed result to a string, you can tell this by the <code>.point[Noop]</code> after it. Based on the rules of the noop monad, we can optimise our code to remove this:</p>
+<pre class="prettyprint"><code class="language-scala">(for {
+  primes &lt;- calculatePrimes(Int.MaxValue).point[Noop]
+  summed &lt;- primes.reduce(_ + _).point[Noop]
+} yield summed).run</code></pre>
+<p>Is this safe to do? In fact it is, because we have actually replaced our intention of doing nothing, with nothing. We can do the same for summing all the primes:</p>
+<pre class="prettyprint"><code class="language-scala">(for {
+  primes &lt;- calculatePrimes(Int.MaxValue).point[Noop]
+} yield primes).run</code></pre>
+<p>Now the final step in code optimisation, and this is the hardest to follow so bear with me, we can actually remove the not calculating the primes itself, and simultaneously remove the <code>run</code> function on that <code>Noop</code>. But how is this so? You may remember that I explained earlier if a pure function returns <code>Unit</code>, then it must do nothing. Our <code>Noop.run</code> is a pure function, and it does nothing. So since evaluating <code>run</code> does nothing, we can safely replace it with nothing. Finding it hard to follow? This is what it looks like in code:</p>
+<pre class="prettyprint"><code class="language-scala">
+
+</code></pre>
+<p>As you can see, we&rsquo;ve gone from five reasonably complex lines of code, to absolutely no code at all! This is the embodiment of what Dijkstra meant when he said:</p>
+<blockquote>
+  <p>If we wish to count lines of code, we should not regard them as &ldquo;lines produced&rdquo; but as &ldquo;lines spent&rdquo;.</p>
+</blockquote>
+<p>The noop monad has allowed us to spend zero lines of code in doing nothing.</p><h3 id="Teaching-monads"><a class="section-marker" href="#Teaching-monads">§</a>Teaching monads</h3>
+<p>Teaching monads has proven to be the unicorn of evangelising functional programming, no matter how hard anyone tries, no one seems to be able to teach them to a newcomer. The noop monad solves this by grounding monads in a context that all students can relate to - doing nothing.</p>
+<p>In particular, the noop monad does a great job for picking up the pieces of a failed attempt to teach a student monads. For example, consider the following situations:</p>
+<ul>
+  <li>A student has been told that <a href="http://james-iry.blogspot.com.au/2009/05/brief-incomplete-and-mostly-wrong.html">monads are just monoids in the category of endofunctors</a>. What does that even mean? But if I say the noop monoid in the category of endofunctors is just something that does nothing, simple!</li>
+  <li>A student has been told that <a href="http://blog.plover.com/prog/burritos.html">monads are burritos</a>. What does that even mean? But if I say the noop burrito is just something that does nothing, simple!</li>
+</ul><h2 id="Conclusion"><a class="section-marker" href="#Conclusion">§</a>Conclusion</h2>
+<p>So today I&rsquo;ve introduced you to the noop monad. As you can see, it&rsquo;s in the noop monad that functional programming is made complete, fullfilling everything that every functional programmer has ever wanted to do, that is, nothing at all.</p>
+
+    <div class="postDate">Posted 1 April 2015</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+      <li><a href="/tags/monad.html">monad</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2015-04-01-noop-monad";
+      var disqus_title = "The Noop Monad - doing nothing safely";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

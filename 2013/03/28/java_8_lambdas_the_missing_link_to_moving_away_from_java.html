@@ -1,0 +1,250 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Java 8 Lambdas - The missing link to moving away from Java</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2013/03/28/java_8_lambdas_the_missing_link_to_moving_away_from_java.html">Java 8 Lambdas - The missing link to moving away from Java</a></h1>
+
+    <blockquote>
+I learnt functional programming, but then I decided I liked imperative programming better so I switched back.
+<div style="text-align: right">&mdash; Nobody, ever</div>
+</blockquote>
+
+<p>
+Moving from imperative programming to functional programming is a very common thing to do today.  Blog posts on the internet abound with testimonies about it.  Everything I've read and every person I've talked to, including myself, has the same story.  Once they started functional programming, there was no looking back.  They loved it, and in the early days, even the small amount they learnt gave them a thirst to learn more.
+</p>
+
+<p>
+To me it seems clear, going from imperative programming to functional programming is a one way street under heavy traffic.  It's a diode with a million volts sitting across it.  It's a check valve on a mains water pipe.  Not only can you not go back, but it comes with an irresistible desire to explore and learn more that pushes you further into functional programming.
+</p>
+
+<h2>Java 8 Lambdas</h2>
+
+<p>
+With Java 8 lambdas on the way, this poses an interesting turning point for one of the largest groups of developers on the planet.  Lambdas in themselves don't necessarily equate to functional programming.  But they do enable it.  And as a developer here starts dabbling in functional programming, a library maintainer there, we'll start to see some new things in Java source code.  Methods that previously might have returned <tt>null</tt> will start returning <a href="http://docs.guava-libraries.googlecode.com/git/javadoc/com/google/common/base/Optional.html"><tt>Optional</tt></a>.  Libraries that do IO, for example HTTP client libraries, will start returning <a href="http://gee.cs.oswego.edu/dl/jsr166/dist/docs/java/util/concurrent/CompletableFuture.html"><tt>CompletableFuture</tt></a>.  More and more functional concepts will start creeping into Java interfaces, there will be methods called fold, map, reduce, collect.  And so will start the one way street of the Java masses moving from imperative programming to functional programming.
+</p>
+
+<p>
+But will Java satisfy their thirst?  Looking at the Lambda spec, I suspect not.  I see an essence of genius in the Lambda spec, it makes many, many existing libraries instantly usable, with no changes, with Lambdas.  The reason for this is that a Lambda is just syntactic sugar for implementing a single-abstract-method (SAM) interface.  In Java you'll find SAM's everywhere, from <tt>Runnable</tt> and <tt>Callable</tt> in the concurrency package, to <tt>ActionListener</tt> in Swing, to <tt>Function</tt> and <tt>Supplier</tt> in Guava, and the list goes on.  All of these libraries are Lambda ready today.
+</p>
+
+<p>
+However, this also presents a problem.  Functional programming gets interesting when you start composing things.  The ability to pass functions around and compose them together gives a lot of power - but the Java 8 Lambdas are not composable.  Java 8 does provide a <a href="http://download.java.net/jdk8/docs/api/java/util/function/Function.html"><tt>Future</tt></a> SAM, but so does Guava, and many other libraries.  To compose these together, you'd need all permutations of composition methods.  Two SAM's of the same type aren't even very simple to compose, at least, not in a traditional Java way, since you can't add any methods to the SAM, such as a map or transform method, to do the composing.
+</p>
+
+<p>
+So, without the ability to do one of the most basic functional concepts, composing functions, can Java ever become a functional language?  Maybe there are some creative ways to solve this that I haven't thought of.  And maybe it doesn't need to, I don't think the designers of Java 8 Lambdas had any intention of making Java a functional language, so you can't call this a fault of the Lambda spec.  But the problem is the developers, having got a taste for functional programming, as I pointed out earlier, are going to want more, and going to want more fast.  Even if Java could become a functional language, I don't think it will keep up with the movement of Java developers to functional programming.
+</p>
+
+<p>
+So I'm going to make a prediction.  Java 8 Lambdas will be eagerly adopted.  So eagerly that Java itself will be left behind, and the majority of Java developers will move on to a language that meets their needs as eager budding new functional programmers.
+</p>
+
+<h2>Which language?</h2>
+
+<p>
+Before I speculate on which language Java developers will move to, let me first just qualify that I am both biased and ignorant.  I work for Typesafe, and so am obviously biased towards Scala.  And apart from playing with Haskell and ML at university, I have never used any other functional language in anger.  So take my words with a grain of salt, and if you disagree, write your own blog post about it.
+</p>
+
+<h2>Scala as a transitionary language</h2>
+
+<p>
+So firstly, I think Scala makes a great transitionary language for imperative programmers to switch to functional programming.  Having got a taste for functional programming with Java 8 Lambdas, a Java developer will find themselves very comfortable in Scala.  They can still do everything in the same way they used to, they have vars and mutable collections, they have all the standard Java libraries at their finger tips.  And of course, they can start deepening their knowledge in functional programming.  So Scala provides a smooth transition from imperative programming to functional programming, you can adopt functional programming as quickly or as slowly as you like.
+</p>
+
+<h2>Scala as the destination language</h2>
+
+<p>
+Having transitioned to functional programming, will developers stay at Scala, or will they move on, like they moved on from Java, in search of a more pure language?  My opinion here is no.  Broadly speaking, I see two camps in the functional programming community.  The first camp sees functional programming as a set of laws that must be followed.  For this camp, Scala has a lot of things that are not necessary and/or dangerous, and they would probably not see Scala as the end destination.
+</p>
+
+<p>
+The second camp sees functional programming as a powerful tool that should be widely exploited, but not a set of laws that must be followed.  This is where I stand, and Scala fills the needs of this camp very well.  Functional programming has first class support in Scala, but you can always fall back to imperative when it makes sense.  I suspect that the majority of the Java community would be inclined to join this camp, otherwise, they would already be shunning Java and writing Haskell.
+</p>
+
+<p>
+So I think Java 8 Lambdas are going to be very good for Scala, in that they give Java developers a taste for what Scala will do for them, and thus funnel the masses into Scala development.
+</p>
+
+    <div class="postDate">Posted 28 March 2013</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2013-03-28-java_8_lambdas_the_missing_link_to_moving_away_from_java";
+      var disqus_title = "Java 8 Lambdas - The missing link to moving away from Java";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

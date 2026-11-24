@@ -1,0 +1,224 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - JPA 2.0 - New features - Part 1</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2008/03/24/jpa_2_0_new_features_part_1.html">JPA 2.0 - New features - Part 1</a></h1>
+
+    
+In my previous blog post I wrote about asking the JPA presenter at the Sun Tech Days if JPA will support collections of basic types.  I've now done some research of my own and found that most of the features that I miss most in JPA, compared to Hibernate, will be in JPA.<p class="paragraph"/>Let me start by saying that the first version of the Java Persistence API is excellent.  Standardising three major competing vendors of ORM technologies, Hibernate, JDO and Toplink, into one standard would have been by no means an easy task.  It certainly would have been an easy way out for the expert group to produce an API that included only the features they could agree on, but did not include many of the fundamental features of an ORM framework.  I feel however that all the core aspects of ORM concepts have been addressed, the things that were left out were not essential.  This is where JPA 2.0 comes in.  Now that JPA has gained industry acceptance, it is time to fill the standard out, include all those nice to have features and clean it up around the edges.<p class="paragraph"/>The JPA 2.0 specification has yet to be proposed as a JSR, so nothing that I'm about to mention is definitely going to be in there.  All of the information I'm providing is based on presentations that I've read given by the people who will be involved in specifying JPA 2.0.
+<h3 class="heading-1-1">Collections of basic and embedded types</h3><p class="paragraph"/>This is the feature that I most miss whenever I use JPA.  I can understand why it may not have been seen as essential to be included in JPA initially, collections of basic types is not strictly an object oriented concept, because basic types are not objects.  Nevertheless, in practice it is data structure frequently used both in relational databases and in object oriented models.<p class="paragraph"/>An example might be tags in a blog.  A tag would not be considered an object, it is simply a keyword used to index blog entries.  The same tag may be applied to multiple blog entries, but if it were removed from all of these blog entries, it would no longer exist in any form.  The concept of a tag is therefore not an object, and hence it would not make sense to map tags as entities in themselves.  Rather, each blog entry would have a set of Strings.  Using hibernate extensions, this is currently how it's done:<p class="paragraph"/>
+<pre class="prettyprint"><code class="language-java">@CollectionOfElements
+private Set<String> tags;
+</code></pre>
+<p class="paragraph"/>This can similarly be mapped in TopLink using @BasicCollection.
+<h3 class="heading-1-1">Unidirectional one to many</h3><p class="paragraph"/>A feature that follows on from collections of basic types, and would also be very helpful in collections of entities, is unidirectional one to many associations.  JPA currently only supports one to many associations as the inverse end of a many to one association, so the owning side of the association is the many side, and never the one side.  What this means, is if you have a BlogEntry entity, and it has a list of Comment entities, you can't add or remove comments from the blog by operating on the comment list, you have to do it by setting or nullifying the blog property on each comment.<p class="paragraph"/>For example, the following code can't be used to add or remove comments from the blog entry:<p class="paragraph"/>
+<pre class="prettyprint"><code class="language-java">blogEntry.getComments().add(comment1);
+blogEntry.getComments().remove(comment2);
+</code></pre>
+<p class="paragraph"/>Rather, it has to be done as follows:<p class="paragraph"/>
+<pre class="prettyprint"><code class="language-java">comment1.setBlogEntry(blogEntry);
+comment2.setBlogEntry(null);
+</code></pre>
+<p class="paragraph"/>This is definitely the easier feature to map to databases, as relationships in a database are always owned by the many table.  The many table will have a column, say blog_entry_id, that is a foreign key to the primary key of the blog_entry table.  However, this is not how we like to view things in an object oriented world.  A blog entry is composed of, among other things, comments.  Without a blog entry instance, a comment instance does not conceptually exist, nor does it make sense to ever use the comment outside of the context of using the blog entry.  In this situation, the sensible mapping is to have the blog entry as the owning side, with no reference from the comment to the blog entry.  Comments then only ever get accessed through accessing the entry first, and get created and removed from the blog entry via operating on the comment list.<p class="paragraph"/>A related question I have that is not clear from my research is whether JPA 2.0 will support Hibernate's delete orphan cascade type, or TopLink's private ownership feature, or something different.  Both achieve the same goal but through quite different methods.
+<h3 class="heading-1-1">Indexed lists</h3><p class="paragraph"/>A further feature that follows on from the above two is indexed lists.  Seeing as JPA can only support the many side being the owner of an association, the many side also has to be where order is lists is managed.  This means adding a property to our Comment entity, we'll call it index.  If it's a bidirectional relationship, the order of the returned list can be set by specifying index as the property to order the comments by.  Now, if I wanted to move the fifth comment to the top of the comment list, if the one side was the owning side, it would be as simple as:<p class="paragraph"/>
+<pre class="prettyprint"><code class="language-java">comments.add(0, comments.remove(4));
+</code></pre>
+<p class="paragraph"/>However, because the owning side is the many side, it has to be done like this:<p class="paragraph"/>
+<pre class="prettyprint"><code class="language-java">for (int i = 0; i < 4; i++)
+{
+    comments.get(i).setIndex(i + 1);
+}
+comments.get(4).setIndex(0);
+comments.add(0, comments.remove(4));
+</code></pre>
+<p class="paragraph"/>Note that the last line there is not absolutely necessary, but keeps the comments list is sync with the index properties, should the list want to be continued to be used.<p class="paragraph"/>If JPA 2.0 can support unidirectional one to many associations, it will need to also be able to manage the index of the list on the one side, meaning that it will persist any changes made to the list order to the database, so that the first example above will be all that's needed to move the fifth comment to the top of the list.<p class="paragraph"/>
+
+    <div class="postDate">Posted 24 March 2008</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/jpa.html">jpa</a></li>
+    
+      <li><a href="/tags/hibernate.html">hibernate</a></li>
+    
+      <li><a href="/tags/toplink.html">toplink</a></li>
+    
+      <li><a href="/tags/java.html">java</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2008-03-24-jpa_2_0_new_features_part_1";
+      var disqus_title = "JPA 2.0 - New features - Part 1";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

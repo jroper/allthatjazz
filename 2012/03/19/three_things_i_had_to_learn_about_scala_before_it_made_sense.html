@@ -1,0 +1,367 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Three things I had to learn about Scala before it made sense</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2012/03/19/three_things_i_had_to_learn_about_scala_before_it_made_sense.html">Three things I had to learn about Scala before it made sense</a></h1>
+
+    <p>
+Last year I sat down in a meeting room with a few other colleagues to learn from one of Atlassian's biggest Scala advocates about Scala.  I kept on hearing good stuff about Scala, and I like trying new things, so I was eager to have my eyes opened so that I could learn how awesome this thing was.  Unfortunately, I was disapponted.  Most of the lesson went straight over my head.  But to my dismay, the other people in the room seemed to get it.  It was on this day that I realised an interesting thing about my learning style.  I remembered back at uni, I was exactly the same in lectures... I never got anything I was taught in lectures.  Which is probably why by the end of uni, I had pretty much stopped attending all CS lectures.  It wasn't until I was given a real problem in a lab that I had to solve that I got it.  This is why I never really got functional languages at uni, the lecturers that taught functional languages at my uni weren't the most practical of people.  Actually, I don't think they ever even considered whether their work had any practical implications at all.  So they taught things like map, reduce, filter, fold, curried functions etc like this "Look, here's something you've never heard of! Behold its awesomeness! Now here's a trivial mathematical use case with no apparent real world application! Look at how practical it is!"
+</p>
+
+<p>
+Some people have no problems learning this way, and I envy them.  For me, I need to have a problem that I understand and want to solve today, that the thing that I'm learning can solve, in order to learn it.  So if you're reading this and thinking "That is so me!", and you want to learn Scala, then hopefully this is the blog post for you.  I'm going to start with a practical problem that hopefully you will understand and want to solve, and then show you how three particular Scala features allow solving this really elegantly and simply.  Hopefully after that, you'll have a good understanding of those features in Scala, and be able to understand a lot more of Scala code when you encounter it.
+</p>
+
+<h2>The problem</h2>
+
+<p>
+The problem that I want to solve is dependency management.  If you've ever used maven, you'll know how verbose this can be.  For those that haven't encountered maven, here's what specifying a single dependency looks like:
+</p>
+
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;
+    &lt;groupId&gt;net.vz.mongodb.jackson&lt;/groupId&gt;
+    &lt;artifactId&gt;mongo-jackson-mapper&lt;/artifactId&gt;
+    &lt;version&gt;1.4.1&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+
+<p>
+In English, this means a dependency on the artifact <code>mongo-jackson-mapper</code> version 1.4.1 from the organisation <code>net.vz.mongodb.jackson</code>.  The English explanation is shorter than the code!  Maybe the Maven authors could have made things nicer, by placing it on one line, and that would be clearer too, for example, something like this:
+</p>
+
+<pre class="prettyprint"><code class="language-xml">&lt;dependency&gt;net.vz.mongodb.jackson:mongo-jackson-mapper:1.4.1&lt;/dependency&gt;
+</code></pre>
+
+<p>
+There are however some advantages to the more verbose model, the language (XML) that the DSL (maven pom.xml format) uses is able to fully express every element of the dependency, rather than the elements being defined in some other format XML is unaware of.  There are also other attributes (such as scope and classifier) that the more verbose solution can easily unambiguously specify, these become very hard if it's just an arbitrary string of characters.
+</p>
+
+<p>
+So here is the problem.  I want a DSL to specify dependencies with as little noise as possible from the DSL, so that my dependency specification is short, unambiguous, and its format should be enforced by the language it's specified in.  The language I'm going to use is Scala.
+</p>
+
+<p>
+And just to ground this problem even more solidly in reality, this example is not contrived.  SBT, the Scala Build Tool, uses Scala to specify its build configuration, including dependencies.  The solution I'm going to show you is the solution that SBT uses.  So by the end of this you will also understand a little about how to use SBT, which you will no doubt need to know as you delve into the world of Scala.
+</p>
+
+<h2>How would we do it with no weird Scala tricks?</h2>
+
+<p>
+First of all I will give a solution that uses language constructs that you should already be familiar with, using classes, fields, methods etc.  If the following syntax makes no sense to you, you should probably do some reading on basic Scala syntax.
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def groupId(groupId: String) = new GroupId(groupId)
+
+class GroupId(val groupId: String) {
+  def artifact(artifactId: String) = new Artifact(groupId, artifactId)
+}
+
+class Artifact(val groupId: String, val artifactId: String) {
+  def version(version: String) = new VersionedArtifact(groupId, artifactId, version)
+}
+
+class VersionedArtifact(val groupId: String, val artifactId: String, val version: String) {
+}
+</code></pre>
+
+<p>
+Here we have three classes, a <code>GroupId</code>, which has a method for creating an <code>Artifact</code> from that group id, which in turn has a method for creating a <code>VersionedArtifact</code>, which captures our dependency.  There's also a factory method for creating the <code>GroupId</code>.  To use it, we can do this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">groupId("net.vz.mongodb.jackson")
+    .artifact("mongo-jackson-mapper")
+    .version("1.4.1")
+</code></pre>
+
+<p>
+Already it's looking better than the XML version, but this could be done in Java too.  Scala has a lot more to offer yet.  As we go through the following lessons, it's important to remember that each change we make, we are still basically achieving the same as the above.
+</p>
+
+<h2>Lesson One: Scala methods can be made of operator characters</h2>
+
+<p>
+To Java developers such as myself, this is a bit weird, though in other languages this is quite common.  There's some strict rules in Scala over exactly what a method name can be, but one of them is that it can be made of just operator characters (ie, +, =, *, /, %, -).  So, the first change that we're going to make to our above code is to get rid of the method names.  It makes things more concise, but other than that it may seem like a weird first step.  Bear with me.
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def groupId(groupId: String) = new GroupId(groupId)
+
+class GroupId(val groupId: String) {
+  def %(artifactId: String) = new Artifact(groupId, artifactId)
+}
+
+class Artifact(val groupId: String, val artifactId: String) {
+  def %(version: String) = new VersionedArtifact(groupId, artifactId, version)
+}
+
+class VersionedArtifact(val groupId: String, val artifactId: String, val version: String) {
+}
+</code></pre>
+
+<p>
+And so now our code looks like this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">groupId("net.vz.mongodb.jackson").%("mongo-jackson-mapper").%("1.4.1")
+</code></pre>
+
+<h2>Lesson Two: Scala lets you call methods without dots or braces</h2>
+
+<p>
+There are some strict rules governing this, including what happens when obvious ambiguities arise, and you can read about that in your own research.  Simply put, if a method has only one parameter, you can call it without using the dot or the braces, rather replace them with whitespace:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">groupId "net.vz.mongodb.jackson" % "mongo-jackson-mapper" % "1.4.1"
+</code></pre>
+
+<p>
+This is called "infix" notation, which you may have also come across in other languages.  We're looking much more concise now, yet the language is still enforcing the rules of what a dependency needs, and we still end up with a strongly typed <code>VersionedArtifact</code>.  But we're not finished yet.
+</p>
+
+<h2>Lesson Three: Scala lets you implicitly convert any type to any other type</h2>
+
+<p>
+For me, this was the weirdest feature of Scala when I first learnt it.  It sounded so cool and dangerous at the same time.  Most languages, when you call a method on an object, if that method doesn't exist on that object, will throw an error.  For the statically typed languages, this will be a compile error, for dynamic languages it will be a runtime error.  However, Scala is a bit different.  When it can't find a method on an object (at compile time, because Scala is statically typed), it has an extra step before it gives up with an error.
+</p>
+
+<p>
+Scala has a concept of implicit methods (and fields, but right now let's only worry about methods).  When a method that you call doesn't exist on the object that you're trying to invoke it on, it will check the current scope for any implicit methods that take the type of your object as an argument.  If the implicit methods result has a method that matches the method you are trying to invoke, then Scala wraps your object in that implicit method call.  Have I lost you?  Let's look at some code:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">implicit def groupId(groupId: String) = new GroupId(groupId)
+</code></pre>
+
+<p>
+So the only change I've made to the <code>groupId</code> method is that it is now implicit.  When I define my dependency, I do this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">"net.vz.mongodb.jackson" % "mongo-jackson-mapper" % "1.4.1"
+</code></pre>
+
+<p>
+Notice that the call to <code>groupId</code> has completely disappeared.  If at this point our newly learned Scala syntax is a bit overwhelming for you, maybe it would help to see what would happen if we applied the implicit rule first, before we got rid of our dots and braces, and before we changed our method names to percent signs:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">"net.vz.mongodb.jackson".artifact("mongo-jackson-mapper").version("1.4.1")
+</code></pre>
+
+<p>
+What it looks like is that the <code>String</code> class has a method called <code>artifact</code>.  But we know it doesn't, and the Scala compiler knows it doesn't.  When it sees that, it says "are there any implicit methods available that accept a <code>String</code> as an argument, and return a type that has an <code>artifact</code> method?"  And so it finds the <code>groupId</code> method, which matches that criteria, and converts the code to this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">groupId("net.vz.mongodb.jackson").artifact("mongo-jackson-mapper").version("1.4.1")
+</code></pre>
+
+<p>
+When I first learnt about this feature, I thought that's going to cause massive amounts of confusion.  And, if used irresponsibly, it certainly can.  But when used carefully, it provides a massive amount of power, for example, in creating DSLs like the one above, or for adding methods to third party/legacy libraries.
+</p>
+
+<p>
+On a side note, Scala actually uses this to add functional methods to the Java collections API, by providing implicit conversion methods to convert Java collections to Scala collections.  The confusion that could arise can be avoided by being careful to only import the implicit methods you need, where you need them.  Scala allows you to put an import statement anywhere in code, so if you have one method in a class that needs to work with Java collections, you can import the implicit collection conversions into just that block of code.  In the case of DSLs, it's usually the case that the use of these are separated from the rest of your code by normal encapsulation, so a DSL for accessing a database would only appear in a DAO, where you're expecting it to appear, so there would be no confusion.
+</p>
+
+<h2>Putting it into context</h2>
+
+<p>
+There is one last step, and that is to show what we actually do with the dependency we've declared.  In maven, our XML ends up being part of the rest of the overly verbose POM file.  In SBT, there is a file called <code>build.sbt</code> that contains snippets of Scala, which build up the configuration.  Available to the snippets are certain variables, for example, <code>libraryDependencies</code>, which contain the configuration.  So adding my dependency to my SBT project means adding a line to the <code>build.sbt</code> file, like this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">libraryDependencies += "net.vz.mongodb.jackson" % "mongo-jackson-mapper" % "1.4.1"
+</code></pre>
+
+<p>
+You may notice here that there is another use of infix operator named methods, <code>+=</code> is a method defined in mutable collections for adding elements.  Multiple dependencies can be added more tersely like this:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">libraryDependencies ++= Seq(
+    "net.vz.mongodb.jackson" % "mongo-jackson-mapper" % "1.4.1",
+    "net.vz.mongodb.jackson" % "play-mongo-jackson-mapper" % "1.0.0"
+)
+</code></pre>
+
+<p>
+So there we have it.  We have a very terse way of specifying dependencies, that is strongly typed, and so validated at compile time.  I hope that the problem I have presented and solved is a problem that you have understood and can relate to, and that you've understood how Scala can be used to help solve it, and that in learning how Scala helps solve it, you've learnt and understood some important features of the Scala language that you're now keen to apply to other problems that you have.
+</p>
+
+    <div class="postDate">Posted 19 March 2012</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2012-03-19-three_things_i_had_to_learn_about_scala_before_it_made_sense";
+      var disqus_title = "Three things I had to learn about Scala before it made sense";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

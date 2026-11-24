@@ -1,0 +1,339 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - sbt - A task engine</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2015/03/03/sbt-task-engine.html">sbt - A task engine</a></h1>
+
+    <p>sbt is the best build tool that I&rsquo;ve used. But it&rsquo;s also the build tool with the steepest learning curve that I&rsquo;ve ever used, and I think most people would agree that it&rsquo;s very difficult to learn. When you first start using it, configuring it is like casting spells, spells that have to be learned from a spell book, that have to be said in the exact right way, otherwise they don&rsquo;t work. There are lots of guides out there that are essentially spell books, they teach you all the things you need to know to achieve various tasks. But I haven&rsquo;t seen a lot out there that actually explains what sbt is, what it does, why it is the way it is. This blog post is my attempt to do that.</p><h2 id="A-task-engine"><a class="section-marker" href="#A-task-engine">§</a>A task engine</h2>
+<p>Simply put, sbt is a task engine. You have tasks. A task may be dependent on other tasks. Any task from any point in the build may be redefined, and new tasks can be easily added. In some ways it is a bit like make or ant, but it differs in a fundamental way, sbt tasks produce an output value, and are able to consume the output values of the tasks they depend on - whereas make and ant just modify the file system. This property of sbt allows you to break build steps up into very fine grained tasks.</p>
+<p>So let&rsquo;s take an example. A common step that build tools support is compilation. In many traditional build tools, a compilation task is responsible for finding a set of files to compile based on some input parameters, such as a list of source directories, and compiling them. In sbt, the <code>compile</code> task is not responsible for finding a set of files to compile, this is the responsibility of the <code>sources</code> task. The output value of the sources task is a list of files to compile. The <code>compile</code> task depends on the <code>sources</code> task, taking its list of files to compile as an input.</p>
+<p>So what&rsquo;s so good about this? What it means is that I can completely customise the way sources are located, by redefining the <code>sources</code> task. So if I have a crazy build requirement such as wanting to put a special annotation in my source files to say whether they get compiled or not, I can very easily implement my own <code>sources</code> task to do that. This is something that would be very difficult to do in another build tool, but in sbt it&rsquo;s straight forward.</p>
+<p>In other build tools, if I want to generate some sources, I have to make sure that the task to generate the sources runs before the compilation task, and puts them in a place the compilation task will find. In sbt, I can just redefine the <code>sources</code> task to make it generate the sources. In practice though, I don&rsquo;t need to do that, because generating sources is a very common requirement. Remember that I said that sbt tasks can be very fine grained. The <code>sources</code> task itself depends on many other tasks, one of them is the <code>managedSources</code> task, which collects all the files that are managed (or generated) by the build (in contrast to unmanaged sources, which are your regular source files that you manage yourself). That task in turn depends on the <code>sourceGenerators</code> task, which I can redefine to add new source generators.</p><h2 id="A-self-documenting-task-engine"><a class="section-marker" href="#A-self-documenting-task-engine">§</a>A self documenting task engine</h2>
+<p>At this point you might be starting to see that there are many, many tasks involved in even the simplest build in sbt. I&rsquo;ve talked about just one small part, how generated sources end up being compiled, but there are many more than that. How is someone that is new to sbt supposed to know what tasks exist, so that they can customise their build? Well, it turns out sbt comes with a few built in tools for inspecting the available tasks. These are often seen as advanced features of sbt, but I think really this is what new users to sbt should be introduced to first. So if you&rsquo;re new, its time to fire up sbt.</p>
+<p>First we need a simple project. In an empty directory, create a file called <code>build.sbt</code>, and set your projects name:</p>
+<pre class="prettyprint"><code class="language-scala">name := &quot;sbt-fun&quot;
+</code></pre>
+<p>Now, if you already have sbt 0.13 or later installed, you can use that. If you already have activator installed - which is basically just a script that launches sbt, then you can use that. If you have neither, then go <a href="https://typesafe.com/community/core-tools/activator-and-sbt">here</a> and download activator or sbt, it doesn&rsquo;t matter which, and install it, and then start it in your projects directory:</p>
+<pre class="prettyprint"><code>$ sbt
+[info] Loading project definition from /Users/jroper/sbt-fun/project
+[info] Updating {file:/Users/jroper/sbt-fun/project/}sbt-fun-build...
+[info] Resolving org.fusesource.jansi#jansi;1.4 ...
+[info] Done updating.
+[info] Set current project to sbt-fun (in build file:/Users/jroper/sbt-fun/)
+&gt; 
+</code></pre>
+<p>So, now we&rsquo;re on the sbt console. Earlier we were talking about the <code>sources</code> task. Let&rsquo;s have a look at it. sbt has a command called <code>inspect</code>, which lets you inspect a task:</p>
+<pre class="prettyprint"><code>&gt; inspect sources
+[info] Task: scala.collection.Seq[java.io.File]
+[info] Description:
+[info]  All sources, both managed and unmanaged.
+[info] Provided by:
+[info]  {file:/Users/jroper/sbt-fun/}sbt-fun/compile:sources
+[info] Defined at:
+[info]  (sbt.Defaults) Defaults.scala:188
+[info] Dependencies:
+[info]  compile:unmanagedSources
+[info]  compile:managedSources
+[info] Delegates:
+[info]  compile:sources
+[info]  *:sources
+[info]  {.}/compile:sources
+[info]  {.}/*:sources
+[info]  */compile:sources
+[info]  */*:sources
+[info] Related:
+[info]  test:sources
+</code></pre>
+<p>What are we looking at? First, we can see that <code>sources</code> is a task that produces a sequence of files - as I said before. We can also see a description of the task, <em>All sources, both managed and unmanaged.</em> The <em>Defined at</em> section is interesting, it shows us where the <code>sources</code> task is defined, in this case, it&rsquo;s on <a href="https://github.com/sbt/sbt/blob/0.13.5/main/src/main/scala/sbt/Defaults.scala#L188">line 188 of the sbt <code>Defaults</code> class</a>. We can see that it has two tasks that it depends on, <code>unmanagedSources</code> and <code>managedSources</code>. The rest of the information we won&rsquo;t worry about for now.</p>
+<p>Now before we start playing with our build, we can actually get even more information here, not only is it possible to inspect a single task in sbt, you can also inspect a whole tree of tasks, using the <code>inspect tree</code> command:</p>
+<pre class="prettyprint"><code>&gt; inspect tree sources
+[info] compile:sources = Task[scala.collection.Seq[java.io.File]]
+[info]   +-compile:unmanagedSources = Task[scala.collection.Seq[java.io.File]]
+[info]   | +-*/*:sourcesInBase = true
+[info]   | +-*/*:excludeFilter = sbt.HiddenFileFilter$@5a63fa71
+[info]   | +-*:baseDirectory = /Users/jroper/sbt-fun
+[info]   | +-*/*:unmanagedSources::includeFilter = sbt.SimpleFilter@44a44a04
+[info]   | +-compile:unmanagedSourceDirectories = List(/Users/jroper/sbt-fun/src/main/scala, /Users/jroper/sbt-fun/sr..
+[info]   |   +-compile:javaSource = src/main/java
+[info]   |   | +-compile:sourceDirectory = src/main
+[info]   |   |   +-*:sourceDirectory = src
+[info]   |   |   | +-*:baseDirectory = /Users/jroper/sbt-fun
+[info]   |   |   |   +-*:thisProject = Project(id sbt-fun, base: /Users/jroper/sbt-fun, configurations: List(compile,..
+[info]   |   |   |   
+[info]   |   |   +-compile:configuration = compile
+[info]   |   |   
+[info]   |   +-compile:scalaSource = src/main/scala
+[info]   |     +-compile:sourceDirectory = src/main
+[info]   |       +-*:sourceDirectory = src
+[info]   |       | +-*:baseDirectory = /Users/jroper/sbt-fun
+[info]   |       |   +-*:thisProject = Project(id sbt-fun, base: /Users/jroper/sbt-fun, configurations: List(compile,..
+[info]   |       |   
+[info]   |       +-compile:configuration = compile
+[info]   |       
+[info]   +-compile:managedSources = Task[scala.collection.Seq[java.io.File]]
+[info]     +-compile:sourceGenerators = List()
+[info]     
+</code></pre>
+<p>So in here you can see that <code>sources</code> to <code>managedSources</code> to <code>sourceGenerators</code> chain that I mentioned before, and you can also see the <code>unmanagedSources</code> chain, which is a lot more complex, we can see directory hierarchies, filters for deciding which files to include and exclude, etc.</p><h2 id="Settings-vs-Tasks"><a class="section-marker" href="#Settings-vs-Tasks">§</a>Settings vs Tasks</h2>
+<p>At this point you may notice that there are two types of tasks in the tree, there are things like <code>managedSources</code>, which just describe the type of the task:</p>
+<pre class="prettyprint"><code>compile:managedSources = Task[scala.collection.Seq[java.io.File]]
+</code></pre>
+<p>And then there are things like <code>scalaSource</code>, which actually display a value:</p>
+<pre class="prettyprint"><code>compile:scalaSource = src/main/scala
+</code></pre>
+<p>This is actually an sbt optimisation, sbt has a special type of task called a <code>Setting</code>. Settings get executed once per session, so when you start sbt up, you start a new session, and all the settings get executed then. This is why when I inspect the tree, sbt can show me the value, because it already knows it. In contrast, an ordinary <code>Task</code> gets executed once per execution. So if I now run the <code>sources</code> task, that <code>managedSources</code> task will be executed then. If I run <code>sources</code> again, it will be executed again. But my settings only get executed once for the whole session.</p>
+<p>It should be noted that an <em>execution</em> is a request by the user to execute a task. If two tasks in my tree depend on the <code>sources</code> task twice, sbt will ensure that the <code>sources</code> task only gets executed once. So if I run the <code>publish</code> task, which transitively depends on the <code>compile</code> task, as well as the <code>doc</code> task (that generates java/scala docs), and the <code>packageSrc</code> task (that generates source jars), these all depend on the same <code>sources</code> task, which will only be executed once during my <code>publish</code> execution, and the value will be reused as the input for all three tasks.</p>
+<p>Now naturally, since settings are executed at the start of the session, and not as part of an execution, they can&rsquo;t depend on tasks, they can only depend on other settings. Meanwhile, tasks can depend on both other tasks and settings.</p>
+<p>When it&rsquo;s important to know the difference between settings and tasks is when you&rsquo;re writing your own sbt plugins that define their own settings and tasks. But in general, you can consider them to be the same thing, settings are just a small optimisation so that they don&rsquo;t have to be executed every time. When defining your own tasks or settings, a good rule of thumb is if in doubt, just define a task.</p><h2 id="Scopes"><a class="section-marker" href="#Scopes">§</a>Scopes</h2>
+<p>Scopes are another important feature of the sbt task engine. A task can be scoped. When a task depends on another task, it can depend on that task in a particular scope. Now one obvious type of scope that sbt supports is the configuration scope. sbt has a few built in configurations, the two main ones that you&rsquo;ll interact with are <code>compile</code> and <code>test</code>. So above, when the <code>sources</code> command depends on <code>managedSources</code>, you can see that it actually depends on <code>compile:managedSources</code>, which means it depends on <code>managedSources</code> in the <code>compile</code> scope.</p>
+<p>In actual fact, you can see at the top that we are looking at the tree for <code>compile:sources</code>. When you don&rsquo;t specify a scope, sbt will choose a default scope, in this case it has chosen the <code>compile</code> scope. The logic in how it makes that decision we won&rsquo;t cover here. We could also inspect the <code>test:sources</code> tree:</p>
+<pre class="prettyprint"><code>&gt; inspect tree test:sources
+[info] test:sources = Task[scala.collection.Seq[java.io.File]]
+[info]   +-test:unmanagedSources = Task[scala.collection.Seq[java.io.File]]
+[info]   | +-test:unmanagedSourceDirectories = List(/Users/jroper/sbt-fun/src/test/scala, /Users/jroper/sbt-fun/src/t..
+[info]   | | +-test:javaSource = src/test/java
+[info]   | | | +-test:sourceDirectory = src/test
+[info]   | | |   +-*:sourceDirectory = src
+[info]   | | |   | +-*:baseDirectory = /Users/jroper/sbt-fun
+[info]   | | |   |   +-*:thisProject = Project(id sbt-fun, base: /Users/jroper/sbt-fun, configurations: List(compile,..
+[info]   | | |   |   
+[info]   | | |   +-test:configuration = test
+[info]   | | |   
+[info]   | | +-test:scalaSource = src/test/scala
+[info]   | |   +-test:sourceDirectory = src/test
+[info]   | |     +-*:sourceDirectory = src
+[info]   | |     | +-*:baseDirectory = /Users/jroper/sbt-fun
+[info]   | |     |   +-*:thisProject = Project(id sbt-fun, base: /Users/jroper/sbt-fun, configurations: List(compile,..
+[info]   | |     |   
+[info]   | |     +-test:configuration = test
+[info]   | |     
+[info]   | +-*/*:unmanagedSources::includeFilter = sbt.SimpleFilter@44a44a04
+[info]   | +-*/*:excludeFilter = sbt.HiddenFileFilter$@5a63fa71
+[info]   | 
+[info]   +-test:managedSources = Task[scala.collection.Seq[java.io.File]]
+[info]     +-test:sourceGenerators = List()
+[info]     
+</code></pre>
+<p>It looks pretty similar to the <code>compile:sources</code> tree, except that it depends on <code>test</code> scoped settings. In some cases, you can see that the scope is <code>*</code>, this means that it&rsquo;s depending on an unscoped task/setting.</p>
+<p>Configuration is not the only axis that you can scope tasks on in sbt, sbt supports two other axes, project and task.</p>
+<p>The project axis is scoped by an sbt project. An sbt build can have multiple projects, and each project can have its own set of settings. When you define tasks on a project, sbt will automatically scope those tasks, and the dependencies of those tasks, to be for that project, that is if you haven&rsquo;t already explicitly scoped them to a project yourself. Tasks scoped to one project can also depend on tasks in another project, so you could for example make the <code>packageSrc</code> command in one project depend on the <code>sources</code> for all the other projects, thus bringing all your sources together into one source jar.</p>
+<p>The syntax for scoping something by project on the sbt command line is to prefix the task with the project name followed by a slash, then the task. For example <code>sbt-fun/compile:sources</code> is the <code>sources</code> task in the <code>compile</code> scope from the <code>sbt-fun</code> project. You can actually see from the output of the plain <code>inspect</code> command, in the <em>Provided By</em> section, that the full task is <code>{file:/Users/jroper/sbt-fun/}sbt-fun/compile:sources</code>, this is the path of the build, followed by the project name, configuration and task. Sometimes tasks and settings are scoped to be global or for the entire build, you can see some such settings above, they are prefixed with <code>*/</code>, so <code>*/*:excludeFilter</code> is the <code>excludeFilter</code> task, with no configuration scope, and no project scope.</p>
+<p>The final axis is to be scoped by another task. Scoping by another task is incredibly useful, which we&rsquo;ll see when we get to scope fallbacks, but what it means is that the same task key can be used and explicitly configured for many tasks. In the above tree we can see that <code>unmanagedSources</code> depends on <code>includeFilter</code> scoped to the <code>unmanagedSources</code> task, the syntax for this is <code>unmanagedSources::includeFilter</code>. <code>includeFilter</code> may also be used elsewhere, for example, in discovering <code>resources</code>, in that case it will be scoped to the <code>unmanagedResources</code> task.</p><h2 id="Scope-fallbacks"><a class="section-marker" href="#Scope-fallbacks">§</a>Scope fallbacks</h2>
+<p>Scopes work in a hierarchical fashion, allowing fallbacks through the hierarchy when tasks at a specific scope can&rsquo;t be found. I mentioned above that <code>unmanagedSources</code> depends on <code>unmanagedSources::includeFilter</code>. Let&rsquo;s have a closer look, by inspecting it:</p>
+<pre class="prettyprint"><code>&gt; inspect unmanagedSources
+[info] Task: scala.collection.Seq[java.io.File]
+[info] Description:
+[info]  Unmanaged sources, which are manually created.
+[info] Provided by:
+[info]  {file:/Users/jroper/sbt-fun/}sbt-fun/compile:unmanagedSources
+[info] Defined at:
+[info]  (sbt.Defaults) Defaults.scala:182
+[info]  (sbt.Defaults) Defaults.scala:209
+[info] Dependencies:
+[info]  compile:baseDirectory
+[info]  compile:unmanagedSourceDirectories
+[info]  compile:unmanagedSources::includeFilter
+[info]  compile:unmanagedSources::excludeFilter
+...
+</code></pre>
+<p>So we can see that <code>compile:unmanagedSources</code> depends on <code>compile:unmanagedSources::includeFilter</code> and <code>compile:unmanagedSources::excludeFilter</code>. But if we have a look at the inspect tree command, we&rsquo;ll notice a discrepancy:</p>
+<pre class="prettyprint"><code>&gt; inspect tree unmanagedSources
+[info] compile:unmanagedSources = Task[scala.collection.Seq[java.io.File]]
+[info]   +-*/*:sourcesInBase = true
+[info]   +-*/*:excludeFilter = sbt.HiddenFileFilter$@5a63fa71
+[info]   +-*:baseDirectory = /Users/jroper/sbt-fun
+[info]   +-*/*:unmanagedSources::includeFilter = sbt.SimpleFilter@44a44a04
+...
+</code></pre>
+<p>So, while it depended on <code>sbt-fun/compile:unmanagedSources::includeFilter</code>, it actually got <code>*/*:unmanagedSources::includeFilter</code>, that is, it requested a task at a specific project and configuration, but got a task that was defined for no project or configuration. Furthermore, the <code>excludeFilter</code> which was similarly requested, was satisfied by <code>*/*:excludeFilter</code>, that is, it isn&rsquo;t even scoped to the <code>unmanagedSources</code> task. This is a demonstration of how sbt uses fallbacks. When a task declares a dependency, sbt will try and satisfy that dependency with the most specific task it has for it, but if no task is defined at that specific scope, it will fallback to a less specific scope.</p>
+<p>What this means, for example for <code>excludeFilter</code>, is that if you have a text editor that generates temporary files of a particular format, you can exclude those by adding it to the global <code>excludeFilter</code>, you don&rsquo;t need to define an <code>excludeFilter</code> for every single scope. But, I might also decide that I want to exclude certain files in the test scope, so I can configure a different <code>excludeFilter</code> for tests by scoping it to <code>test</code>. Or, I might decide that I want a different filter again just for <code>unmanagedSources</code>, as opposed to <code>unmanagedResources</code>, so I can define the <code>excludeFilter</code> specifically for those tasks. The general approach that sbt takes in its predefined task dependency trees is to depend on tasks at a very specific scope, but define them at the most general scope that makes sense, allowing tasks to be overridden in a blanket fashion, but at a very fine grained level when required.</p><h2 id="Parallel-by-default"><a class="section-marker" href="#Parallel-by-default">§</a>Parallel by default</h2>
+<p>There is one last feature of the sbt task engine that I think is worth mentioning in this post. It&rsquo;s not one that really needs to be understood well in order to use sbt, but it is a very powerful one that sbt&rsquo;s architecture makes very simple. In sbt, all tasks are executed in parallel by default. Now of course, if a task declares a dependency on another task, those two tasks can&rsquo;t run in parallel. But two tasks that have no dependency on each other, such as <code>unmanagedSources</code> and <code>managedSources</code>, can, and will be executed in parallel. Given sbt&rsquo;s fine grained tasks, this makes for some considerable (and much needed, given the speed of scala compilation) performance improvements out of the box compared to other build tools.</p>
+<p>sbt&rsquo;s concurrent execution is also configurable, tasks can be tagged, and then you can define, for example, what the maximum number of tasks with that tag can be run in parallel. You can read more about these capabilities <a href="http://www.scala-sbt.org/0.13/docs/Parallel-Execution.html">here</a>.</p><h2 id="Conclusion"><a class="section-marker" href="#Conclusion">§</a>Conclusion</h2>
+<p>In this blog post we have seen that sbt is actually a task engine, and that the fact that it breaks tasks up into many smaller interdependent tasks gives you a lot of power and flexibility. We have seen that the sbt console can be used to inspect tasks, their dependencies, and entire dependency graphs of tasks, and this allows us to learn about sbt, the tasks that are available, and see how our build fits together. We have learned how tasks can be scoped to different configurations, projects, and other tasks, and how sbt uses a fallback system to resolve dependencies at specific scopes. Hopefully sbt is now more transparent to you, you no longer need a spellbook to know how to configure it, rather, you can use the inspect commands to discover what you can configure yourself.</p>
+<p>We have not seen anything about how to define or redefine tasks, or the syntax of the sbt build file. This is the topic of my next blog post, <a href="2015/03/04/sbt-declarative-dsl.html">sbt - A declarative DSL</a>.</p>
+
+    <div class="postDate">Posted 3 March 2015</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+      <li><a href="/tags/sbt.html">sbt</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2015-03-03-sbt-task-engine";
+      var disqus_title = "sbt - A task engine";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

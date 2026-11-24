@@ -1,0 +1,203 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Eventual Consistency is not safe and that&#x27;s ok</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2016/05/23/eventual-consistency.html">Eventual Consistency is not safe and that&#x27;s ok</a></h1>
+
+    <p>A number of years ago, <a href="http://www.bailis.org/">Peter Bailis</a> wrote an excellent post titled <a href="http://www.bailis.org/blog/safety-and-liveness-eventual-consistency-is-not-safe/">Safety and Liveness: Eventual Consistency Is Not Safe</a>. This post is short and to the point, and is a very salient reality check for anyone that is using eventual consistency. With the prevelance of eventually consistent architectures and systems today, I recommend that all developers read it, in spite of the posts age, it is just as important today as it was when it was written.</p>
+<p>A member of our marketing department recently came across the post, and sent an email to our engineers because he was somewhat confused about it. At Lightbend, we are advocates of eventual consistency, and much of our tech embraces it. However he was alarmed by the statement that eventual consistency is not safe. This statement led him to the conclusion that the post was saying that eventual consistency must be bad.</p>
+<p>I don&rsquo;t think this conclusion is an unreasonable conclusion for someone not familiar with eventual consistency to make, not just a marketing person, but for a developer who is completely new to eventual consistency. And so I think the statement needs some further explanation.</p>
+<p>So to start with, an analogy. The sun is unsafe. If you were to somehow &ldquo;stand on&rdquo; the sun, before you could begin to comprehend your environment, you would cease to exist in any recognisable form. This property of the sun, that standing on it and existing are incompatible, is not a bad thing, in fact it&rsquo;s not a good thing either, it&rsquo;s neither bad nor good, it&rsquo;s just a property. It doesn&rsquo;t become a good or bad thing until you try to rely on the property or its absence. It simply means, don&rsquo;t stand on the sun.</p>
+<p>Likewise, the unsafeness of eventual consistency is not a bad thing, nor is it a good thing, it&rsquo;s just a property.</p>
+<p>Now the bulk of Peter&rsquo;s post was about how eventual consistency alone is not useful, it must be combined with other guarantees, such as what versions of the data can be returned when it&rsquo;s not consistent, and what version of the data will eventually be returned. These guarantees help to make an eventually consistent system more safe, but they don&rsquo;t stop it from being unsafe.</p>
+<p>So what does this unsafety look like in practice, and why isn&rsquo;t it necessarily a bad thing?</p>
+<p>Let&rsquo;s consider a very common eventually consistent architectural practice - <a href="http://martinfowler.com/bliki/CQRS.html">Command Query Responsibility Segregation (CQRS)</a>. A CQRS implementation is usually eventually consistent, and offers further guarantees such as that the read side will always return some version of the data that matches some version in the write sides history, and that the convergent version that will eventually be returned will always be the most recent version of the write side.</p>
+<p>So, what is not safe about it? Let&rsquo;s say you have a blog that supports full text search. The search is implemented using a read side view of the data that puts all the posts into a natural text index. Since this is using CQRS, the index is updated asynchronously, and it may take some time for the new post to reach the read side. This means, immediately after publishing a new post, let&rsquo;s say it&rsquo;s a post about eventual consistency, if you search for &ldquo;eventual consistency&rdquo;, the post won&rsquo;t come back in the search results. This is in spite of the fact that you can browse to the post, load it, and see the words eventual consistency in the text of the post. The system is in an inconsistent state, when we load the post it has the words &ldquo;eventual consistency&rdquo;, when we ask the search index for all the posts with the words &ldquo;eventual consistency&rdquo; in them, the index doesn&rsquo;t return that post. This is the unsafety, it is not safe to rely on every part of the system returning the same answer to whether our post contains the words &ldquo;eventual consistency&rdquo;.</p>
+<p>So, now we&rsquo;ve seen an example of the unsafety of eventual consistency, why is this not bad? The answer is simply, there is no requirement for the text search to be updated immediately after the blog post is published. There is a requirement that it be eventually updated, and in a somewhat timely manner, and CQRS allows us to meet that requirement. But no one cares if for a few seconds or even minutes after publishing a blog post, that the text search on their blog doesn&rsquo;t return the new post. So the unsafety of eventual consistency is not bad because we&rsquo;re not relying on it to be safe.</p>
+<p>How does this play out in a broader context? It&rsquo;s easy to see how safety is not a requirement for a search index, but that&rsquo;s a very specific scenario, is this one of the few places where eventual consistency can be used? The answer to that is necessarily no, if you&rsquo;re writing a sufficiently large system, with even modest scaling and availability requirements by todays standards, you will probably find yourself having to use eventual consistency in order to scale your system and maintain availability. The upshot is that you must embrace the unsafeness property, and not put strong consistency requirements on the parts of your system that are eventually consistent. You must design your system to handle the unsafeness.</p>
+<p>There are many ways to do this - for example, by using asynchronous message passing, messages can be queued to be handled when the system is consistent and ready to handle them, in contrast to synchronous RPC calls, which require the system to be consistent before the calls can be made. Another technique is to just store events, or facts, things that happened, and don&rsquo;t calculate the state until later, when the system has converged, for example, when the state is queried. And yet another is to assume consistency, but then have a process in place to detect when that assumption was not true, and trigger some recovery operation.</p>
+<p>In all these cases, the unsafeness of eventual consistency isn&rsquo;t a bad thing, it&rsquo;s just a property that has been carefully considered and addressed in the design of the system. It is not safe to rely on the consistency of the system, and that&rsquo;s ok.</p>
+
+    <div class="postDate">Posted 23 May 2016</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/eventual%20consistency.html">eventual consistency</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2016-05-23-eventual-consistency";
+      var disqus_title = "Eventual Consistency is not safe and that&#x27;s ok";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

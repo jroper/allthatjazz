@@ -1,0 +1,372 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Call response WebSockets in Play Framework</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2013/06/12/call_response_websockets_in_play_framework.html">Call response WebSockets in Play Framework</a></h1>
+
+    <p>
+I got a question from a Play user about implementing call/response WebSockets in Play Framework.  This is not something that comes up that often, since it means using WebSockets to do basically what AJAX does for you, so what's the point?  But here are some use cases that I've thought of:
+</p>
+
+<ul>
+<li>You have some transformation of a stream that can only be done on the server side.  For example, perhaps the transformation requires some heavy database work, or is too computationally expensive for a mobile client, or perhaps you want to encrypt the stream with a key that is private to the server.</li>
+<li>You are already processing a stream of events from the server using WebSockets, and the responses to the calls are just more events in this stream, so you'd like to share the same transport mechanism for these events.</li>
+<li>Your application is particularly chatty, and you don't want the overhead of the HTTP protocol on each call/response.</li>
+</ul>
+
+<p>
+There are possibly more use cases - WebSockets is quite a new technology and as an industry we haven't really settled on what it's best use cases are.
+</p>
+
+<h2>A simple echo implementation</h2>
+
+<p>
+A Play WebSocket is implemented by providing an iteratee that consumes messages from the client, and an enumerator that produces messages for the client.  If we simply wanted to echo every message that the client sent us, then we would want to return an iteratee whose input becomes the output of the enumerator that we return.  Play doesn't come with anything out of the box to do this, but we will probably add something out of the box that does this in a future release.  For now, I'm going to write a method called <tt>joined</tt>, that returns a joined iteratee/enumerator pair:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">/**
+ * Create a joined iteratee enumerator pair.
+ *
+ * When the enumerator is applied to an iteratee, the iteratee subsequently consumes whatever the iteratee in the pair
+ * is applied to.  Consequently the enumerator is "one shot", applying it to subsequent iteratees will throw an
+ * exception.
+ */
+def joined[A]: (Iteratee[A, Unit], Enumerator[A]) = {
+  val promisedIteratee = Promise[Iteratee[A, Unit]]()
+  val enumerator = new Enumerator[A] {
+    def apply[B](i: Iteratee[A, B]) = {
+      val doneIteratee = Promise[Iteratee[A, B]]()
+
+      // Equivalent to map, but allows us to handle failures
+      def wrap(delegate: Iteratee[A, B]): Iteratee[A, B] = new Iteratee[A, B] {
+        def fold[C](folder: (Step[A, B]) =&gt; Future[C]) = {
+          val toReturn = delegate.fold {
+            case done @ Step.Done(a, in) =&gt; {
+              doneIteratee.success(done.it)
+              folder(done)
+            }
+            case Step.Cont(k) =&gt; {
+              folder(Step.Cont(k.andThen(wrap)))
+            }
+            case err =&gt; folder(err)
+          }
+          toReturn.onFailure {
+            case e =&gt; doneIteratee.failure(e)
+          }
+          toReturn
+        }
+      }
+
+      if (promisedIteratee.trySuccess(wrap(i).map(_ =&gt; ()))) {
+        doneIteratee.future
+      } else {
+        throw new IllegalStateException(&quot;Joined enumerator may only be applied once&quot;)
+      }
+    }
+  }
+  (Iteratee.flatten(promisedIteratee.future), enumerator)
+}
+</code></pre>
+
+<p>
+This code might be a little scary if you don't understand iteratees, but as I said we will probably add this to Play itself in future.  The rest of the code in this blog post will be simple.
+</p>
+
+<p>
+Now that we have our joined iteratee/enumerator, let's implement an echo WebSocket.  For the rest of this post we'll be assuming that all our WebSockets are sending/receiving JSON messages.
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def echo = WebSocket.using[JsValue] { req =&gt;
+  joined[JsValue]
+}
+</code></pre>
+
+<p>
+So now we have an echo call/response WebSocket.  But this is not very useful, we want to do something with the incoming messages, and producing new outgoing messages as responses.
+</p>
+
+<h2>Processing messages</h2>
+
+<p>
+So now that we've expressed our call/response in terms of a joined iteratee/enumerator, how can we transform the call messages to be different response messages?  The answer is enumeratees.  Enumeratees can be used to transform iteratees and enumerators.  We return both an enumerator and an iteratee, so which one do we transform?  The answer is it doesn't matter, I'm going to use it to transform the iteratee.  The enumeratee that we're going to use is the map enumeratee:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def process = WebSocket.using[JsValue] { req =&gt;
+  val (iter, enum) = joined[JsValue]
+
+  (Enumeratee.map[JsValue] { json =&gt;
+    Json.obj(
+      "status" -&gt; "received",
+      "msg" -&gt; json
+    )
+  } &amp;&gt; iter, enum)
+}
+</code></pre>
+
+<p>
+Enumeratees are one of the most powerful features of iteratees for end users.  You could use any enumeratee here, but let's look at some examples of other common use cases.
+</p>
+
+<p>
+What if we don't want to return a response to every message?  There are numerous ways to do this, but the simplest is to use the <tt>collect</tt> enumeratee, which takes a partial function:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def process = WebSocket.using[JsValue] { req =&gt;
+  val (iter, enum) = joined[JsValue]
+
+  (Enumeratee.collect[JsValue] { 
+    case json if (json \ "foo").asOpt[JsValue].isDefined =&gt;
+      Json.obj(
+        "status" -&gt; "received",
+        "msg" -&gt; json
+      )
+  } &amp;&gt; iter, enum)
+}
+</code></pre>
+
+<p>
+Perhaps we want to produce many responses for a single input.  The <tt>mapConcat</tt> enumeratee can be used in this case, with our map function returning a sequence of <tt>JsValue</tt> messages to return:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def process = WebSocket.using[JsValue] { req =&gt;
+  val (iter, enum) = joined[JsValue]
+
+  (Enumeratee.mapConcat[JsValue] { json =&gt;
+    Seq(
+      Json.obj(
+        "status" -&gt; "received",
+        "msg" -&gt; json
+      ),
+      Json.obj("foo" -&gt; "bar")
+    )
+  } &amp;&gt; iter, enum)
+}
+</code></pre>
+
+<p>
+What if we want to do some blocking operations?  In Play 2.2, this will be able to be done simply by providing an execution context suitable for blocking calls to whichever enumeratee you decide to use, but Play 2.1 does not yet support this, so we have to dispatch the callback to another execution context ourselves.  This can be done using the <tt>mapM</tt> enumeratee:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">val ec: ExecutionContext = ...
+
+def process = WebSocket.using[JsValue] { req =&gt;
+  val (iter, enum) = joined[JsValue]
+
+  (Enumeratee.mapM[JsValue] { json =&gt;
+    Future {
+      // Some expensive computation, eg a database call, that returns JsValue
+    }(ec)
+  } &amp;&gt; iter, enum)
+}
+</code></pre>
+
+<h2>Pushing from an external enumerator</h2>
+
+<p>
+You may want to combine your call/response messages with messages from some other enumerator that spontaneously pushes messages to the client, for example a broadcasting enumerator for all clients.  This can be done by interleaving your joined enumerator with the external enumerator:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">val globalEvents: Enumerator[JsValue] = ...
+
+def process = WebSocket.using[JsValue] { req =&gt;
+  val (iter, enum) = joined[JsValue]
+
+  (Enumeratee.map[JsValue] { json =&gt;
+    ...
+  } &amp;&gt; iter, Enumerator.interleave(enum, globalEvents))
+}
+</code></pre>
+
+<h2>Conclusion</h2>
+
+<p>
+Using WebSockets in a call response style may be something that your application needs.  If so, using enumeratees to map the stream of messages coming in to messages going out is the most natural and idiomatic way of doing this in Play.  It allows you to call on the large number of composable enumeratees that Play provides out of the box, and makes your code simple and easy to reason about.
+</p>
+
+    <div class="postDate">Posted 12 June 2013</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/scala.html">scala</a></li>
+    
+      <li><a href="/tags/iteratee.html">iteratee</a></li>
+    
+      <li><a href="/tags/play.html">play</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2013-06-12-call_response_websockets_in_play_framework";
+      var disqus_title = "Call response WebSockets in Play Framework";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

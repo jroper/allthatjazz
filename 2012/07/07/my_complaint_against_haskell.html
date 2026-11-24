@@ -1,0 +1,226 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - My complaint against Haskell</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2012/07/07/my_complaint_against_haskell.html">My complaint against Haskell</a></h1>
+
+    <p>
+I have nothing against Haskell.  I've been getting my teeth stuck into some Scala over the recent months, and I am loving functional programming, immutable types, and am even starting to see what's so good about monads.  So Haskell, with its reputation of being a good pure functional language, is interesting to me.  I did Haskell when I was in university.  I didn't learn it, if I had learnt it, I would have understood it.  I just did it.  We learnt really useful things like doubling every integer in a list with a simple map function.  Like curried and uncurried functions, like zipping, folding, reducing... all within the context of trivial contrived examples that did absolutely nothing to help us in the real world.  In my 15 years of programming, I have only once ever needed to double every integer in a list, that was in my Haskell lab at uni.  Very useful.
+</p>
+
+<p>
+My problem is not with Haskell.  My problem is with the people that teach and promote Haskell.  They have never presented me with an example of how Haskell can help me in the real world.  And today I'd like to highlight this, by looking at the first piece of code you'll encounter if you read the documentation on Haskell on the <a href="http://www.haskell.org">Haskell website</a>.  If you visit that website, and you want to know what Haskell is, you'll very quickly notice the link "What is Haskell".  Clicking on it, you'll be taken to <a href="http://www.haskell.org/haskellwiki/Introduction">a page</a>, and as you scroll down, you'll come across your first piece of Haskell code.  It's quicksort:
+</p>
+
+<pre>
+quicksort :: Ord a =&gt; [a] -&gt; [a]
+quicksort []     = []
+quicksort (p:xs) = (quicksort lesser) ++ [p] ++ (quicksort greater)
+    where
+        lesser  = filter (&lt; p) xs
+        greater = filter (&gt;= p) xs
+</pre>
+
+<p>
+If you've ever implemented quicksort in a procedural language before, you'll notice that that code is very simple in comparison.  It has some syntax you might not recognise, but it's not a soup of crazy characters like Perl, it looks ordered, and easy to read.  It's impressive.  But is it practical?
+</p>
+
+<p>
+What is quicksort?  The name implies that it is quick.  So what's its running time?  O(<i>n<sup>2</nup></i>).  Wait, hang on, that's not quick, there are faster algorithms out there, like heap sort, it runs in O(<i>n log(n)</i>) time.  Well, it turns out, the average running time of quicksort is <i>n log(n)</i>, but why would you use it over another algorithm that guarantees <i>n log(n)</i> running time?  The reason is, the actual implementation of quicksort is really simple from a computation perspective, it does very little per element of the array, making its actual running time (on average) about 3 times faster than heap sort or merge sort.  This makes quicksort very useful, if you want an algorithm that sorts an array as fast as possible, at the cost of in some circumstances not being very fast, then quicksort is perfect for you.  This is why quicksort is called quicksort, it is quick.  It may not mathematically have the best running time, but practically, it is quick.
+<p>
+
+<p>
+This brings me to quicksort in Haskell.  One of the reasons why quicksort, implemented in a procedural language, is so quick is that it does very close to the minimum necessary swap operations needed to sort the array.  It sorts in place, it doesn't require building supplementary data structures, like two separate arrays in merge sort or the maximum heap in heap sort.  It plays very nicely with hardware optimisations like CPU caches, maximising cache hits regardless of the size of the array and cache.  However, the implementation above in Haskell does use additional structures.  It partitions the list by creating two new lists on each recursion of the algorithm, requiring many more memory writes than the in place implementation.  It uses linked lists, which play very poorly with CPU caches.  It still runs in <i>n log(n)</i> on average, but it's now doing a lot more operations with very little help from hardware.  This added overhead means that quicksort is no longer 3 times faster than merge or heap sort.  Which means it now, on average, has similar run times to the O(<i>n log(n)</i>) algorithms, and still with the possibility of running in <i>n<sup>2</sup></i> for some inputs.  It no longer is <i>quick</i>, and hence is not practical to use in the real world, you may as well use merge sort or heap sort.
+</p>
+
+<p>
+To make matters worse, this implementation will <i>always</i> perform poorly on lists that are already k sorted, which is not an uncommon real world input to sort algorithms.  A procedural implementation may also perform poorly on k sorted lists, but it's a simple change to make it perform well, just choose a random pivot, or a pivot from somewhere in the middle of the list.  In Haskell, you can't do that without adding yet another overhead, because your lists are linked lists, and so accessing a random pivot takes <i>n</i> time.
+</p>
+
+<p>
+Now, none of this means that Haskell is a bad language.  Merge sort in Haskell is also very simple, and is also a very practical sorting algorithm in many cases, and so could have been used as an example instead.  But why did the authors of this documentation choose a piece of code that is completely useless in the real world as the first taste of Haskell that many people will ever see?  This is my complaint about Haskell, it's never been promoted to me in a way that bears any practical usefulness.  I'm sure it's a great language.  Pity about the people that promote it.
+</p>
+
+    <div class="postDate">Posted 7 July 2012</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/haskell.html">haskell</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2012-07-07-my_complaint_against_haskell";
+      var disqus_title = "My complaint against Haskell";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,276 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - Comments complement code</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2012/11/08/comments_complement_code.html">Comments complement code</a></h1>
+
+    <p>
+Today I read this quote:
+</p>
+
+<blockquote>
+Good code is its own best documentation. As you’re about to add a comment, ask yourself, ‘How can I improve the code so that this comment isn’t needed?’
+</blockquote>
+
+<p>
+I just want to say, it's a load of rubbish.  Take a look at the following code:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">def toCharArray(
+     decoder: CharsetDecoder = Charset.forName("UTF-8").newDecoder()
+  ): Enumeratee[Array[Byte], Array[Char]] = new Enumeratee[Array[Byte],Array[Char]] {
+
+  def step[A](inner: Iteratee[Array[Char], A], partialChar: Option[Array[Byte]] = None)(in: Input[Array[Byte]]): 
+      Iteratee[Array[Byte], Iteratee[Array[Char], A]] = {
+    in match {
+      case EOF =&gt; partialChar.map(_ =&gt; Error[Array[Byte]]("EOF encountered mid character", EOF))
+        .getOrElse(Done[Array[Byte],Iteratee[Array[Char],A]](inner, EOF))
+
+      case Empty =&gt; Cont(step(inner, partialChar))
+
+      case El(data) =&gt; {
+        val charBuffer = CharBuffer.allocate(data.length + 1)
+        val byteBuffer = partialChar.map({ leftOver =&gt;
+          val buffer = ByteBuffer.allocate(leftOver.length + data.length)
+          buffer.mark()
+          buffer.put(leftOver).put(data)
+          buffer.reset()
+          buffer
+        }).getOrElse(ByteBuffer.wrap(data))
+
+        decoder.decode(byteBuffer, charBuffer, false)
+
+        val leftOver = if (byteBuffer.limit() &gt; byteBuffer.position()) {
+          Some(byteBuffer.array().drop(byteBuffer.position()))
+        } else None
+
+        val decoded = charBuffer.array().take(charBuffer.position())
+        val input = if (decoded.length == 0) Empty else El(decoded)
+
+        inner.pureFlatFold {
+          case Step.Cont(k) =&gt; Cont(step(k(input), leftOver))
+          case _ =&gt; Done(inner, Input.Empty)
+        }
+      }
+    }
+  }
+
+  def applyOn[A](inner: Iteratee[Array[Char], A]) = Cont(step(inner))
+}
+</code></pre>
+
+<p>
+If you know iteratees and you know Scala, it's pretty obvious what this does.  It converts a stream of byte arrays into a stream of char arrays, taking into the consideration the possibility that one character may be split across multiple byte arrays.  Structurally it is purely functional, however the actual decoding is not, it uses the high performance Java <tt>CharBuffer</tt> and <tt>ByteBuffer</tt> classes to do the decoding, which are mutable, and arguably this is necessary since this enumeratee is a place where performance matters.  I wrote it, and in my opinion it's not badly written, though if you can see anything that could be improved, please let me know.
+</p>
+
+<p>
+So, tell me, on line 14, why do I allocate a char buffer of the incoming byte array length plus one?  What is the reason for the plus one?  When I first wrote it, I didn't have the plus one there, I didn't think it was needed.  You see, when converting an array of bytes to an array of UTF-16 Java characters, at most, 8 bytes will become 8 characters, right?  8 bytes could become 4 characters, if those characters were multi byte characters, the number of chars needed might be less than the number of bytes being decoded, but it can never be more, right?  One byte can't become multiple UTF-16 chars, so why would I ever need 9 characters for 8 bytes?
+</p>
+
+<p>
+Now maybe you might criticise my code because the +1 is actually a magic number, and if I gave it a name, then that would explain everything.  Well, let's give it a name, and reasonable a name (I could give it a two hundred character long name and that might explain everything but you can hardly call two hundred character long variable names good code.  Well, maybe you can in Java, but not in Scala).  So I'll create a <tt>val PotentialMultiCharOffset = 1</tt>.  Does that help you at all?  Do you know what it's for?  Why is it 1?  Why is it added, why don't I multiply by 2?  If you do know the reason behind it, then hats off to you, you are a genius.  But for the rest of us, we don't know.  It as only after I wrote comprehensive unit tests for the code that I found the bug (I've heard other people say that unit tests are not necessary for functional code, another fallacy).
+</p>
+
+<p>
+Let me show you the comment that is above that line of code:
+</p>
+
+<pre class="prettyprint"><code class="language-scala">// The +1 here is very important, it is there for the case when there are
+// 3 bytes of a 4 byte character in the partialChar array, and so this data
+// should contain the final byte, but that one byte will become 2 Chars.
+val charBuffer = CharBuffer.allocate(data.length + 1)
+</code></pre>
+
+<p>
+Understand it now?  Was there any way that I could have written the code that would have explained that?  Was there any variable name that I could have given it that would have explained it better than that comment?  No, it just needed a simple comment explaining its purpose.  Without the comment, you'd be sitting there wondering why on earth I had added 1, you might have even thought "this is allocating more memory than needed, I'll just optimise this" and you would have injected a bug.  In this case, a comment is aptly suited to making the code understandable.  The comment complements the code.  It is necessary and the best way of describing it.
+</p>
+
+<p>
+And the fact is that we come across things every day where some really obscure edge case means we have to do some otherwise obscure behaviour.  Maybe in a world of higher order logic this isn't the case, but we work in a world of far less than perfect protocols with edge cases that are impossible to memorise, where optimising an equals comparison to return early when you encounter the first character that isn't equal is a security vulnerability, where bugs in other software that our software has to interface to means we have to do counter intuitive things to work around their issues, and where some things are just plain hard to get your heard around, and sometimes a little plain English (or whatever language you speak) just does that little bit to helping you or the next developer make sense of it all.
+</p>
+
+<p>
+Comments complement code.  Good code does not negate the need of comments.  Good code includes comments where comments are needed.
+</p>
+
+    <div class="postDate">Posted 8 November 2012</div>
+    <ul class="tags">
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2012-11-08-comments_complement_code";
+      var disqus_title = "Comments complement code";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

@@ -1,0 +1,206 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    
+<meta charset="utf-8">
+
+<base href="/"/>
+
+<title>all that jazz - CQRS increases consistency</title>
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="alternate" type="application/atom+xml" title="Atom" href="/atom.xml" />
+
+<link rel="stylesheet" href="/_assets/erqx-jazzy-theme.css">
+
+<link rel="shortcut icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+<link rel="icon" href="/_assets/erqx-icon.ico" type="image/x-icon">
+
+
+<link rel="me" href="https://fosstodon.org/@jroper"/>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-22554795-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+<style type="text/css">
+  /* Twitter button styling */
+  .twitter-btn, .twitter-btn .twitter-label, .twitter-btn-o {
+    display: inline-block;
+    vertical-align: top;
+    zoom: 1;
+  }
+  .twitter-btn-o {
+    max-width: 100%;
+  }
+  .twitter-btn {
+    font: normal normal normal 11px/18px 'Helvetica Neue',Arial,sans-serif;
+    position: relative;
+    height: 20px;
+    box-sizing: border-box;
+    padding: 1px 8px 1px 6px;
+    background-color: #1b95e0;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: 500;
+    cursor: pointer;
+    outline: 0;
+    text-decoration: none
+  }
+  div.slideout .twitter-btn, div.slideout .twitter-btn:visited, div.slideout .twitter-btn:active, div.slideout .twitter-btn:focus, div.slideout .twitter-btn:hover{
+    background-color: #0c7abf;
+    color: #fff;
+  }
+  .twitter-btn:active {
+    box-shadow: inset 0 3px 5px rgba(0, 0, 0, .1);
+  }
+  .twitter-btn i {
+    position: relative;
+    top: 2px;
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background: transparent 0 0 no-repeat;
+    background-image: url(data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2072%2072%22%3E%3Cpath%20fill%3D%22none%22%20d%3D%22M0%200h72v72H0z%22%2F%3E%3Cpath%20class%3D%22icon%22%20fill%3D%22%23fff%22%20d%3D%22M68.812%2015.14c-2.348%201.04-4.87%201.744-7.52%202.06%202.704-1.62%204.78-4.186%205.757-7.243-2.53%201.5-5.33%202.592-8.314%203.176C56.35%2010.59%2052.948%209%2049.182%209c-7.23%200-13.092%205.86-13.092%2013.093%200%201.026.118%202.02.338%202.98C25.543%2024.527%2015.9%2019.318%209.44%2011.396c-1.125%201.936-1.77%204.184-1.77%206.58%200%204.543%202.312%208.552%205.824%2010.9-2.146-.07-4.165-.658-5.93-1.64-.002.056-.002.11-.002.163%200%206.345%204.513%2011.638%2010.504%2012.84-1.1.298-2.256.457-3.45.457-.845%200-1.666-.078-2.464-.23%201.667%205.2%206.5%208.985%2012.23%209.09-4.482%203.51-10.13%205.605-16.26%205.605-1.055%200-2.096-.06-3.122-.184%205.794%203.717%2012.676%205.882%2020.067%205.882%2024.083%200%2037.25-19.95%2037.25-37.25%200-.565-.013-1.133-.038-1.693%202.558-1.847%204.778-4.15%206.532-6.774z%22%2F%3E%3C%2Fsvg%3E);
+  }
+  .twitter-btn .twitter-label {
+    margin-left: 3px;
+    white-space: nowrap;
+  }
+  .twitter-btn .twitter-label b {
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  img.astro {
+    width: 100%;
+    margin: 10px 0 30px 0;
+  }  
+</style>
+
+
+
+
+  </head>
+  <body>
+
+    <div class="container">
+
+      <div class="row">
+
+        <input type="checkbox" class="slideout-check" id="slideout-check" />
+
+        <div class="main col-xs-12 col-sm-8">
+
+          <header>
+            <h1><a href="/">all that jazz</a></h1>
+
+            
+              <h2>james&#x27; blog about scala and all that jazz</h2>
+            
+          </header>
+
+          <label for="slideout-check" class="slideout-tab">About</label>
+          
+  <article>
+    <h1 class="postTitle"><a href="/2016/10/08/cqrs-increases-consistency.html">CQRS increases consistency</a></h1>
+
+    <blockquote>
+  <p>The problem with CQRS is that it makes things more complex because it decreases consistency.</p>
+</blockquote>
+<p>I hear this argument a lot. As the author of a <a href="http://www.lagomframework.com">framework that strongly encourages CQRS</a>, I obviously am biased against this opinion, and disgaree with it.</p>
+<p>Of course, the statement and my disagreement needs context and qualification. If you have a traditional monolithic system, where all data operations are done on a single database, and that single database supports ACID transactions, then yes, switching to CQRS will decrease consistency. However, that&rsquo;s not the context in which CQRS usually comes up, and it&rsquo;s not the context that I recommend using it in. The context is microservices, and more and more industry experts are recommending that people move away from monoliths and move to microservices.</p><h2 id="Microservices-decrease-consistency"><a class="section-marker" href="#Microservices-decrease-consistency">§</a>Microservices decrease consistency</h2>
+<p>A core principle of microservices is that they should own all their own data. Another core principle is that they should be able to act autonomously. This means they shouldn&rsquo;t need to depend on other services - in particular making synchrconous calls to other services - in order to implement the functions they are responsible for.</p>
+<p>If a service is to be autonomous then, it needs to store all the data necessary for it to achieve its functions. Sometimes this data may be owned by other services - and so in order to function, those services need to publish that data for this service to consume and update its own store. This means in a microservices system, the same data is going to be stored in many places. Will this data be strongly consistent across the entire system? Unless every time you do an operation, you stop all other requests to the entire system, and process the operation until it succeeds, the answer is no, it will often be inconsistent.</p>
+<p>So, a switch to microservices is by nature a switch to decreased consistency. Decreased consistency is a consequence of microservices.</p><h2 id="Inconsistency-can-be-very-bad"><a class="section-marker" href="#Inconsistency-can-be-very-bad">§</a>Inconsistency can be very bad</h2>
+<p>Because we are using microservices, our system can become inconsistent, and we need to deal with that. How inconsistent our system can get depends on how we deal with it. The typical, very high level hand wavy approach to dealing with inconsistency in a distributed system is to use eventual consistency. But how is that actually achieved?</p>
+<p>Let&rsquo;s imagine service B needs some data owned by service A to implement its responsibility. In this scenario, A is responsible for writing the data, it&rsquo;s the thing that handles the command, while B is responsible for reading the data, it does the query. In order for B to act autonomously though, it can&rsquo;t query A directly, it needs to have A push it the data so that it can update its own query store, and then when the time comes to use it, query it locally.</p>
+<p>Service A could do this synchronously, when an operation is done on service A, it will make a call on service B to update it with the results. Now this works fine on paper, but what happens when service B is down at that time? Does service A have to keep retrying until service B comes back up? What if service A then goes down?</p>
+<p>As you can see we now have a consistency problem, one that will not eventually become consistent. Service A has been updated, but service B failed to update. It will stay inconsistent forever, we could say that it is terminally inconsistent, and will require manual intervention in order to fix. The reason we have this problem is that we combined our command responsibility and query responsibilities in the one operation, and since that operation wasn&rsquo;t atomic, a partial failure of the operation will lead to terminal inconsistency.</p><h2 id="CQRS-gives-you-consistency-back"><a class="section-marker" href="#CQRS-gives-you-consistency-back">§</a>CQRS gives you consistency back</h2>
+<p>CQRS means separating command responsibilities from query responsibilities. In our scenario, using CQRS, service A handles the command, and updates its state, and is done. Then, in a separate operation, another process will take the result of the operation on A, and asynchronously push it to service B.</p>
+<p>Since the operation is asynchronous, service B doesn&rsquo;t need to be up at the time - for example it can use an at least once messaging queue to handle the message. If service B isn&rsquo;t up at the time, then the system will be inconsistent for a period of time. However, when service B comes back up, and then processes the message, the system will become consistent again, it will be eventually consistent.</p>
+<p>So by employing CQRS, we are able to get back some of the consistency guarantees that we lost when we moved to microservices. We don&rsquo;t have a globally consistent system, but we can guarantee an eventually consistent system.</p><h2 id="CQRS-is-a-necessary-evil"><a class="section-marker" href="#CQRS-is-a-necessary-evil">§</a>CQRS is a necessary evil</h2>
+<p>CQRS is complex, far more complex than handling both the command and query responsibilities of data in single operations on a strongly consistent database. However, in a microservices world, we don&rsquo;t have the luxury of relying on a single strongly consistent database. In that world, inconsistency is a given. If someone says using CQRS in microservices means you lose consistency - they have failed to acknowledge that they lost consistency the moment they started using microservices, it was not CQRS that lost them that consistency. Rather, CQRS is a very powerful tool that allows us to address the inherent inconsistency of microservices to give us eventual consistency instead of terminal inconsistency.</p>
+
+    <div class="postDate">Posted 8 October 2016</div>
+    <ul class="tags">
+    
+      <li><a href="/tags/cqrs.html">cqrs</a></li>
+    
+    </ul>
+
+    
+      <div id="disqus_thread"></div>
+      <script type="text/javascript">
+      var disqus_shortname = "jazzyidau";
+      var disqus_identifier = "2016-10-08-cqrs-increases-consistency";
+      var disqus_title = "CQRS increases consistency";
+
+      (function() {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+      })();
+      </script>
+      <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+      <a href="https://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+    
+  </article>
+
+        </div>
+        <div class="slideout col-sm-4">
+
+          
+            <header>
+              <h2>About</h2>
+            </header>
+
+            <div class="description">
+              <img style="float: right; margin: 5px; width: 120px;" src="images/james3.jpg"/>
+Hi! My name is James Roper, and I am a software developer with a particular interest in open source
+development and trying new things. I program in Scala, Java, Go, PHP, Python and Javascript, and I work
+for <a href="https://lightbend.com">Lightbend</a> as the architect of
+<a href="https://kalix.io">Kalix</a>. I also have a full life outside the world of IT,
+enjoy playing a variety of musical instruments and sports, and currently I live in Canberra.
+<br/>
+<br/>
+<div class="twitter-btn-o"><a class="twitter-btn" title="Follow @jroper on Twitter" href="https://twitter.com/intent/follow?original_referer=https%3A%2F%2Fjazzy.id.au%2F&amp;ref_src=twsrc%5Etfw&amp;region=follow_link&amp;screen_name=jroper&amp;tw_p=followbutton" target="_blank" onclick="window.open(event.currentTarget.getAttribute('href'),'twitter','resizable,height=500,width=550,top=' + Math.max(Math.round(window.screen.height / 2 - 250),0) + ',left=' + Math.round(window.screen.width / 2 - 275)); return false;"><i></i><span class="twitter-label">Follow <b>@jroper</b></span></a></div>
+
+            </div>
+          
+        </div>
+      </div>
+    </div>
+
+    
+
+    <div class="footer">
+        <div class="container">
+            <p class="text-muted">
+                Copyright James Roper.  <a rel="license" href="http://creativecommons.org/licenses/by-nc/2.5/au/">Some rights reserved</a>.
+
+            </p>
+        </div>
+    </div>
+
+
+<script type="text/javascript" charset="utf-8" src="/_assets/erqx-jazzy-theme.js"></script>
+<script type="text/javascript">
+$(function(){
+window.prettyPrint && prettyPrint()
+});
+</script>
+
+  </body>
+</html>
+

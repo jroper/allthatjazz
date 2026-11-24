@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns="http://www.w3.org/2005/Atom">
+        <title>all that jazz</title>
+        <link rel="alternate" type="text/html" href="https://jazzy.id.au/"/>
+        <link rel="self" type="application/atom+xml" href="https://jazzy.id.au/atom.xml"/>
+        <subtitle>james' blog about scala and all that jazz</subtitle>
+        <id>https://jazzy.id.au/</id>
+        <rights>James Roper</rights>
+        <updated>2024-12-15T00:00:00+11:00</updated>
+        <dc:creator>James Roper</dc:creator>
+        <dc:date>2024-12-15T00:00:00+11:00</dc:date>
+        <dc:language>en</dc:language>
+        <dc:rights>James Roper</dc:rights>
+        <entry>
+            <title>Orion Nebula</title>
+            <link rel="alternate" href="https://jazzy.id.au/2024/12/15/orion.html"/>
+            <category term="astrophotography" scheme="https://jazzy.id.au/tags/astrophotography.html"/>
+            <author>
+              <name>James Roper</name>
+              <uri>https://jazzy.id.au/</uri>
+            </author>
+            <id>https://jazzy.id.au/2024/12/15/orion.html</id>
+            <updated>2024-12-15T00:00:00+11:00</updated>
+            <published>2024-12-15T00:00:00+11:00</published>
+            <content type="html"><![CDATA[<img class="astro" alt="Orion Nebula" src="https://jazzy.id.au/images/astro/2024-12-15-orion.jpg"/>
+<p>This is the Orion Nebula, also known as M42. It&rsquo;s a diffuse nebula, containing a mixture of neutral clouds of dust and gas, ionised gas regions, and reflection nebulae. It&rsquo;s approxmiately 1350 lightyears away.</p>
+<ul>
+  <li><strong>Telescope:</strong> Skywatcher Classic 250P 10&quot; Dobsonian 1200 FL</li>
+  <li><strong>Tracking:</strong> Home built 2 circle segment equatorial platform</li>
+  <li><strong>Camera:</strong> ZWO ASI533MM Pro, CMOS monochrome 3008x3008 3.76μm pixels, 100 gain</li>
+  <li><strong>Integration:</strong> 200x10s luminance, 50x10s red, 50x10s green, 50x10s blue</li>
+  <li><strong>Calibration:</strong> 100x10s darks</li>
+  <li><strong>Image capture:</strong> ASIImg</li>
+  <li><strong>Stacking:</strong> <a href="https://siril.org/">Siril</a></li>
+  <li><strong>Post-processing:</strong> <a href="https://www.gimp.org/">Gimp</a></li>
+  <li><strong>Skies:</strong> Almost full moon.</li>
+</ul>]]></content>
+            <dc:date>2024-12-15T00:00:00+11:00</dc:date>
+          </entry><entry>
+            <title>Jupiter</title>
+            <link rel="alternate" href="https://jazzy.id.au/2024/12/15/jupiter.html"/>
+            <category term="astrophotography" scheme="https://jazzy.id.au/tags/astrophotography.html"/>
+            <author>
+              <name>James Roper</name>
+              <uri>https://jazzy.id.au/</uri>
+            </author>
+            <id>https://jazzy.id.au/2024/12/15/jupiter.html</id>
+            <updated>2024-12-15T00:00:00+11:00</updated>
+            <published>2024-12-15T00:00:00+11:00</published>
+            <content type="html"><![CDATA[<img class="astro" alt="Jupiter" src="https://jazzy.id.au/images/astro/2024-12-15-jupiter.jpg"/>
+<p>This is Jupiter, and its moon Io.</p>
+<ul>
+  <li><strong>Telescope:</strong> Skywatcher Classic 250P 10&quot; Dobsonian 1200 FL</li>
+  <li><strong>Tracking:</strong> Home built 2 circle segment equatorial platform</li>
+  <li><strong>Camera:</strong> ZWO ASI533MM Pro, CMOS monochrome 3008x3008 3.76μm pixels, 250 gain</li>
+  <li><strong>Integration:</strong> 10000x1ms exposures in each of red, green and blue, with 1% lucky stacking</li>
+  <li><strong>Image capture:</strong> ASICap</li>
+  <li><strong>Stacking:</strong> <a href="https://www.autostakkert.com/">AutoStakkert!</a></li>
+  <li><strong>Post-processing:</strong> <a href="https://www.gimp.org/">Gimp</a></li>
+</ul>]]></content>
+            <dc:date>2024-12-15T00:00:00+11:00</dc:date>
+          </entry><entry>
+            <title>Sculptor Pinwheel Galaxy</title>
+            <link rel="alternate" href="https://jazzy.id.au/2024/11/08/ngc300.html"/>
+            <category term="astrophotography" scheme="https://jazzy.id.au/tags/astrophotography.html"/>
+            <author>
+              <name>James Roper</name>
+              <uri>https://jazzy.id.au/</uri>
+            </author>
+            <id>https://jazzy.id.au/2024/11/08/ngc300.html</id>
+            <updated>2024-11-08T00:00:00+11:00</updated>
+            <published>2024-11-08T00:00:00+11:00</published>
+            <content type="html"><![CDATA[<img class="astro" alt="Sculptor Pinwheel Galaxy" src="https://jazzy.id.au/images/astro/2024-11-08-ngc300.jpg"/>
+<p>This is the Sculptor Pinwheel Galaxy, also known as NGC 300. It&rsquo;s a galaxy in the constellation of Sculptor, roughly 6 million lightyears away. It&rsquo;s a little smaller than the Milky Way.</p>
+<ul>
+  <li><strong>Telescope:</strong> Skywatcher Classic 250P 10&quot; Dobsonian 1200 FL</li>
+  <li><strong>Tracking:</strong> Home built 2 circle segment equatorial platform</li>
+  <li><strong>Camera:</strong> ZWO ASI533MM Pro, CMOS monochrome 3008x3008 3.76μm pixels, 200 gain</li>
+  <li><strong>Integration:</strong> 150x10s luminance, 30x10s red, 30x10s green, 30x10s blue</li>
+  <li><strong>Calibration:</strong> 60x10s darks</li>
+  <li><strong>Image capture:</strong> <a href="https://github.com/artyom-beilis/OpenLiveStacker">OpenLiveStacker</a> on Android phone.</li>
+  <li><strong>Stacking:</strong> <a href="https://siril.org/">Siril</a></li>
+  <li><strong>Post-processing:</strong> <a href="https://www.gimp.org/">Gimp</a></li>
+  <li><strong>Skies:</strong> Quarter moon, in an area that otherwise has Bortle 4 skies (Mt Stromlo)</li>
+</ul>]]></content>
+            <dc:date>2024-11-08T00:00:00+11:00</dc:date>
+          </entry><entry>
+            <title>C/2023 A3 Tsuchinshan ATLAS</title>
+            <link rel="alternate" href="https://jazzy.id.au/2024/10/21/comet.html"/>
+            <category term="astrophotography" scheme="https://jazzy.id.au/tags/astrophotography.html"/>
+            <author>
+              <name>James Roper</name>
+              <uri>https://jazzy.id.au/</uri>
+            </author>
+            <id>https://jazzy.id.au/2024/10/21/comet.html</id>
+            <updated>2024-10-21T00:00:00+11:00</updated>
+            <published>2024-10-21T00:00:00+11:00</published>
+            <content type="html"><![CDATA[<img class="astro" alt="C/2023 A3 Tsuchinshan ATLAS" src="https://jazzy.id.au/images/astro/2024-10-21-comet.jpg"/>
+<p>This is the comet C/2023 A3 Tsuchinshan ATLAS. It became unexpectedly bright as it got closer to the Sun. This image was taken after it emerged from the other side of the Sun.</p>
+<ul>
+  <li><strong>Telescope:</strong> Skywatcher Classic 250P 10&quot; Dobsonian 1200 FL</li>
+  <li><strong>Tracking:</strong> Home built 2 circle segment equatorial platform</li>
+  <li><strong>Camera:</strong> ZWO ASI533MM Pro, CMOS monochrome 3008x3008 3.76μm pixels, 100 gain</li>
+  <li><strong>Image capture:</strong> ASIImg</li>
+  <li><strong>Stacking:</strong> <a href="https://siril.org/">Siril</a></li>
+  <li><strong>Post-processing:</strong> <a href="https://www.gimp.org/">Gimp</a></li>
+  <li><strong>Skies:</strong> Bortle 5 skies (Wanniassa)</li>
+</ul>]]></content>
+            <dc:date>2024-10-21T00:00:00+11:00</dc:date>
+          </entry><entry>
+            <title>Saturn</title>
+            <link rel="alternate" href="https://jazzy.id.au/2024/10/12/saturn.html"/>
+            <category term="astrophotography" scheme="https://jazzy.id.au/tags/astrophotography.html"/>
+            <author>
+              <name>James Roper</name>
+              <uri>https://jazzy.id.au/</uri>
+            </author>
+            <id>https://jazzy.id.au/2024/10/12/saturn.html</id>
+            <updated>2024-10-12T00:00:00+11:00</updated>
+            <published>2024-10-12T00:00:00+11:00</published>
+            <content type="html"><![CDATA[<img class="astro" alt="Saturn" src="https://jazzy.id.au/images/astro/2024-10-12-saturn.jpg"/>
+<p>This is Saturn.</p>
+<ul>
+  <li><strong>Telescope:</strong> Skywatcher Classic 250P 10&quot; Dobsonian 1200 FL</li>
+  <li><strong>Tracking:</strong> Home built 2 circle segment equatorial platform</li>
+  <li><strong>Camera:</strong> ZWO ASI533MM Pro, CMOS monochrome 3008x3008 3.76μm pixels</li>
+  <li><strong>Integration:</strong> 3000x1ms exposures in each of red, green and blue</li>
+  <li><strong>Image capture:</strong> ASICap</li>
+  <li><strong>Stacking:</strong> <a href="https://www.autostakkert.com/">AutoStakkert!</a></li>
+  <li><strong>Post-processing:</strong> <a href="https://www.gimp.org/">Gimp</a></li>
+</ul>]]></content>
+            <dc:date>2024-10-12T00:00:00+11:00</dc:date>
+          </entry>
+      </feed>
